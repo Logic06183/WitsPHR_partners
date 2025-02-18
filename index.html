@@ -56,6 +56,10 @@
             <p>Countries: <span id="country-count">0</span></p>
             <p>Active Projects: <span id="project-count">0</span></p>
         </div>
+
+        <footer class="footer">
+            <p>Developed by Craig Parker for Wits Planetary Health</p>
+        </footer>
     </div>
 
     <script>
@@ -129,6 +133,7 @@
                     ['HIGH'], ['HIGH'],
                     
                     // ENBEL (16)
+                    ['ENBEL'], ['ENBEL'],
                     ['ENBEL'], ['ENBEL'],
                     ['ENBEL'], ['ENBEL'],
                     ['ENBEL'], ['ENBEL'],
@@ -410,13 +415,11 @@
 
         function updateMap() {
             const filters = getSelectedFilters();
+            const filteredData = filterData(data, filters);
             const view = regions[activeRegion];
+            
+            const regionFilteredData = filterDataByRegion(filteredData, activeRegion);
             const traces = [];
-
-            // Add choropleth for African countries if in Africa view
-            if (activeRegion === 'africa') {
-                traces.push(createChoroplethTrace());
-            }
 
             // Partner traces
             if (filters.layers.includes('partners')) {
@@ -446,16 +449,14 @@
                     projectGroups[project].labels.push(institution);
                 });
 
-                if (activeRegion !== 'africa') {
-                    Object.entries(projectGroups).forEach(([project, group]) => {
-                        traces.push(createTrace(group, {
-                            name: project,
-                            size: 6,
-                            symbol: 'circle',
-                            color: 'rgba(44, 62, 80, 0.8)'
-                        }));
-                    });
-                }
+                Object.entries(projectGroups).forEach(([project, group]) => {
+                    traces.push(createTrace(group, {
+                        name: project,
+                        size: 6,
+                        symbol: 'circle',
+                        color: colors[project]
+                    }));
+                });
             }
 
             // Funder traces
@@ -471,14 +472,12 @@
                     labels: regionFilteredData.funders.Institution
                 };
 
-                if (activeRegion !== 'africa') {
-                    traces.push(createTrace(funderData, {
-                        name: 'Funders',
-                        size: 7,
-                        symbol: 'diamond',
-                        color: 'rgba(52, 152, 219, 0.8)'
-                    }));
-                }
+                traces.push(createTrace(funderData, {
+                    name: 'Funders',
+                    size: 7,
+                    symbol: 'diamond',
+                    color: colors['Funder']
+                }));
             }
 
             const layout = {
@@ -494,8 +493,7 @@
                         size: 12,
                         color: '#2c3e50'
                     },
-                    itemsizing: 'constant',
-                    traceorder: 'normal'
+                    itemsizing: 'constant'
                 },
                 geo: {
                     scope: activeRegion === 'usa' ? 'usa' : 'world',
@@ -547,46 +545,47 @@
                 }
             };
 
-            const regionFilteredData = filterDataByRegion(filterData(data, filters), activeRegion);
-
             Plotly.newPlot('map', traces, layout, {
                 responsive: true,
                 displayModeBar: true,
                 modeBarButtonsToRemove: ['lasso2d', 'select2d'],
                 displaylogo: false
             }).then(function() {
-                // Remove any existing instruction
-                const existingInstruction = document.querySelector('.label-instruction');
-                if (existingInstruction) {
-                    existingInstruction.remove();
-                }
-
-                // Add instruction for regional views
-                if (activeRegion !== 'global') {
-                    const instructionDiv = document.createElement('div');
-                    instructionDiv.className = 'label-instruction';
-                    
-                    const icon = document.createElement('span');
-                    icon.className = 'icon';
-                    icon.innerHTML = showLabels ? '&#128064;' : '&#128065;';
-                    
-                    const text = document.createElement('span');
-                    text.textContent = showLabels ? 'Hide Labels' : 'Show Labels';
-                    
-                    instructionDiv.appendChild(icon);
-                    instructionDiv.appendChild(text);
-                    
-                    instructionDiv.onclick = function() {
-                        showLabels = !showLabels;
-                        updateMap();
-                    };
-                    
-                    document.getElementById('map').appendChild(instructionDiv);
-                }
+                // Update label toggle visibility
+                const labelToggle = document.getElementById('label-toggle');
+                labelToggle.style.display = activeRegion !== 'global' ? 'flex' : 'none';
             });
 
             updateStats(traces);
         }
+
+        // Initialize the map
+        updateMap();
+
+        // Add event listeners
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                activeRegion = this.dataset.region;
+                updateMap();
+            });
+        });
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateMap);
+        });
+
+        // Initialize label toggle
+        const labelToggle = document.getElementById('label-toggle');
+        labelToggle.addEventListener('click', function() {
+            showLabels = !showLabels;
+            const icon = this.querySelector('.icon');
+            const text = this.querySelector('.text');
+            icon.textContent = showLabels ? '👁️' : '👁️';
+            text.textContent = showLabels ? 'Hide Labels' : 'Show Labels';
+            updateMap();
+        });
 
         function updateStats(traces) {
             const partnerCount = traces.filter(t => t.name.startsWith('Partners')).length;
@@ -599,9 +598,6 @@
             document.getElementById('country-count').textContent = countries;
             document.getElementById('project-count').textContent = projects;
         }
-
-        // Initial update
-        updateMap();
     </script>
 </body>
 </html>
