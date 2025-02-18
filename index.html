@@ -3,52 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wits Planetary Health Research Global Partners</title>
+    <title>Wits Planetary Health Research Interactive Dashboard</title>
     <link rel="stylesheet" href="static/styles.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Wits Planetary Health Research Global Partners</h1>
+        <h1>Wits Planetary Health Research Interactive Dashboard</h1>
         
-        <div class="region-tabs">
-            <button class="tab-button active" data-region="global">Global View</button>
-            <button class="tab-button" data-region="africa">Africa</button>
-            <button class="tab-button" data-region="europe">Europe</button>
-            <button class="tab-button" data-region="usa">United States</button>
-        </div>
-
-        <div class="controls">
+        <div class="filters">
             <div class="filter-group">
-                <label><strong>Layer Type:</strong></label>
-                <label>
-                    <input type="checkbox" class="layer-filter" value="partners" checked> Partners
-                </label>
-                <label>
-                    <input type="checkbox" class="layer-filter" value="funders" checked> Funders
-                </label>
+                <label>Projects:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" value="CHAMNHA" checked> CHAMNHA</label>
+                    <label><input type="checkbox" value="HE²AT" checked> HE²AT</label>
+                    <label><input type="checkbox" value="HIGH" checked> HIGH</label>
+                    <label><input type="checkbox" value="ENBEL" checked> ENBEL</label>
+                </div>
             </div>
-
+            
             <div class="filter-group">
-                <label><strong>Projects:</strong></label>
-                <label>
-                    <input type="checkbox" class="project-filter" value="CHAMNHA" checked> CHAMNHA
-                </label>
-                <label>
-                    <input type="checkbox" class="project-filter" value="HE2AT" checked> HE2AT
-                </label>
-                <label>
-                    <input type="checkbox" class="project-filter" value="HIGH" checked> HIGH
-                </label>
-                <label>
-                    <input type="checkbox" class="project-filter" value="ENBEL" checked> ENBEL
-                </label>
+                <label>Layers:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" value="partners" checked> Partners</label>
+                    <label><input type="checkbox" value="funders" checked> Funders</label>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <label>View:</label>
+                <div class="button-group">
+                    <button class="tab-button active" data-region="global">Global</button>
+                    <button class="tab-button" data-region="africa">Africa</button>
+                    <button class="tab-button" data-region="europe">Europe</button>
+                    <button class="tab-button" data-region="usa">USA</button>
+                </div>
             </div>
         </div>
 
-        <div id="map" class="map-container"></div>
+        <div id="map-container">
+            <div id="map"></div>
+            <div id="label-toggle" class="label-toggle">
+                <span class="icon">👁️</span>
+                <span class="text">Show Labels</span>
+            </div>
+        </div>
 
-        <div class="stats-panel">
+        <div id="stats">
             <h3>Statistics</h3>
             <p>Partners: <span id="partner-count">0</span></p>
             <p>Funders: <span id="funder-count">0</span></p>
@@ -118,8 +119,8 @@
                     ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'],
                     
                     // HE2AT (6)
-                    ['HE2AT'], ['HE2AT'], ['HE2AT'],
-                    ['HE2AT'], ['HE2AT'], ['HE2AT'],
+                    ['HE²AT'], ['HE²AT'], ['HE²AT'],
+                    ['HE²AT'], ['HE²AT'], ['HE²AT'],
                     
                     // HIGH (8)
                     ['HIGH'], ['HIGH'],
@@ -151,7 +152,7 @@
                     'London', 'Oslo', 'Stockholm', 'Bethesda', 'Brussels'
                 ],
                 'Projects': [
-                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA', 'HE2AT'],
+                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA', 'HE²AT'],
                     ['HIGH', 'ENBEL']
                 ]
             }
@@ -189,7 +190,7 @@
         // Project colors
         const colors = {
             'CHAMNHA': '#1f77b4',  // Blue
-            'HE2AT': '#2ca02c',    // Green
+            'HE²AT': '#2ca02c',    // Green
             'HIGH': '#ff7f0e',     // Orange
             'ENBEL': '#d62728',    // Red
             'Funder': '#9467bd'    // Purple
@@ -223,23 +224,53 @@
             }
         };
 
-        // Initialize active region
-        let activeRegion = 'global';
         let showLabels = false;
+        let activeRegion = 'global';
 
-        // Add click handler for the map
-        document.getElementById('map').addEventListener('click', function() {
-            if (activeRegion !== 'global') {
-                showLabels = !showLabels;
-                updateMap();
-            }
+        // Initialize label toggle
+        const labelToggle = document.getElementById('label-toggle');
+        labelToggle.style.display = 'none'; // Hide initially
+
+        labelToggle.addEventListener('click', function() {
+            showLabels = !showLabels;
+            const icon = this.querySelector('.icon');
+            const text = this.querySelector('.text');
+            icon.textContent = showLabels ? '👁️' : '👁️';
+            text.textContent = showLabels ? 'Hide Labels' : 'Show Labels';
+            updateMap();
+        });
+
+        // Update active region and handle label toggle visibility
+        function setActiveRegion(region) {
+            activeRegion = region;
+            labelToggle.style.display = region !== 'global' ? 'flex' : 'none';
+            updateMap();
+        }
+
+        // Initialize button handlers
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                setActiveRegion(this.dataset.region);
+            });
+        });
+
+        // Initialize checkbox handlers
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateMap);
         });
 
         function getSelectedFilters() {
-            return {
-                layers: Array.from(document.querySelectorAll('.layer-filter:checked')).map(cb => cb.value),
-                projects: Array.from(document.querySelectorAll('.project-filter:checked')).map(cb => cb.value)
-            };
+            const projects = Array.from(document.querySelectorAll('input[type="checkbox"][value]'))
+                .filter(cb => cb.checked && !['partners', 'funders'].includes(cb.value))
+                .map(cb => cb.value);
+            
+            const layers = Array.from(document.querySelectorAll('input[type="checkbox"][value]'))
+                .filter(cb => cb.checked && ['partners', 'funders'].includes(cb.value))
+                .map(cb => cb.value);
+            
+            return { projects, layers };
         }
 
         function createTrace(data, options) {
@@ -247,7 +278,7 @@
                 type: 'scattergeo',
                 lon: data.lons,
                 lat: data.lats,
-                text: data.texts,
+                text: showLabels && activeRegion !== 'global' ? data.labels : data.texts,
                 name: options.name,
                 marker: {
                     size: activeRegion === 'global' ? options.size : options.size + 2,
@@ -262,23 +293,12 @@
                 textposition: 'top center',
                 hoverinfo: 'text',
                 showlegend: true,
-                legendgroup: options.name,
                 textfont: {
                     family: 'Arial, sans-serif',
                     size: 10,
                     color: options.color
                 }
             };
-
-            // Add labels if showing and not in global view
-            if (showLabels && activeRegion !== 'global') {
-                trace.text = data.labels || data.texts;
-                // Ensure no text appears in legend when labels are shown
-                trace.showlegend = true;
-                trace.legendgroup = options.name;
-                trace.name = options.name;
-            }
-
             return trace;
         }
 
@@ -366,13 +386,37 @@
             return filtered;
         }
 
+        const he2atCountries = [
+            'Benin', 'Botswana', 'Burkina Faso', 'Cameroon', 'Côte d\'Ivoire',
+            'Democratic Republic of the Congo', 'Ethiopia', 'Gambia', 'Ghana',
+            'Kenya', 'Lesotho', 'Malawi', 'Mali', 'Mozambique', 'Nigeria',
+            'Rwanda', 'Senegal', 'Sierra Leone', 'South Africa', 'Tanzania',
+            'Uganda', 'Zimbabwe'
+        ];
+
+        function createChoroplethTrace() {
+            return {
+                type: 'choropleth',
+                locationmode: 'country names',
+                locations: he2atCountries,
+                z: Array(he2atCountries.length).fill(1), // Same value for all countries
+                text: he2atCountries,
+                hoverinfo: 'location',
+                colorscale: [[0, 'rgba(255,255,255,0)'], [1, 'rgba(44, 62, 80, 0.6)']],
+                showscale: false,
+                name: 'HE2AT Countries'
+            };
+        }
+
         function updateMap() {
             const filters = getSelectedFilters();
-            const filteredData = filterData(data, filters);
             const view = regions[activeRegion];
-            
-            const regionFilteredData = filterDataByRegion(filteredData, activeRegion);
             const traces = [];
+
+            // Add choropleth for African countries if in Africa view
+            if (activeRegion === 'africa') {
+                traces.push(createChoroplethTrace());
+            }
 
             // Partner traces
             if (filters.layers.includes('partners')) {
@@ -402,14 +446,16 @@
                     projectGroups[project].labels.push(institution);
                 });
 
-                Object.entries(projectGroups).forEach(([project, group]) => {
-                    traces.push(createTrace(group, {
-                        name: project,
-                        size: 6,
-                        symbol: 'circle',
-                        color: 'rgba(44, 62, 80, 0.8)'
-                    }));
-                });
+                if (activeRegion !== 'africa') {
+                    Object.entries(projectGroups).forEach(([project, group]) => {
+                        traces.push(createTrace(group, {
+                            name: project,
+                            size: 6,
+                            symbol: 'circle',
+                            color: 'rgba(44, 62, 80, 0.8)'
+                        }));
+                    });
+                }
             }
 
             // Funder traces
@@ -425,12 +471,14 @@
                     labels: regionFilteredData.funders.Institution
                 };
 
-                traces.push(createTrace(funderData, {
-                    name: 'Funders',
-                    size: 7,
-                    symbol: 'diamond',
-                    color: 'rgba(52, 152, 219, 0.8)'
-                }));
+                if (activeRegion !== 'africa') {
+                    traces.push(createTrace(funderData, {
+                        name: 'Funders',
+                        size: 7,
+                        symbol: 'diamond',
+                        color: 'rgba(52, 152, 219, 0.8)'
+                    }));
+                }
             }
 
             const layout = {
@@ -499,6 +547,8 @@
                 }
             };
 
+            const regionFilteredData = filterDataByRegion(filterData(data, filters), activeRegion);
+
             Plotly.newPlot('map', traces, layout, {
                 responsive: true,
                 displayModeBar: true,
@@ -549,20 +599,6 @@
             document.getElementById('country-count').textContent = countries;
             document.getElementById('project-count').textContent = projects;
         }
-
-        // Event listeners
-        document.querySelectorAll('.layer-filter, .project-filter').forEach(checkbox => {
-            checkbox.addEventListener('change', updateMap);
-        });
-
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                activeRegion = e.target.dataset.region;
-                updateMap();
-            });
-        });
 
         // Initial update
         updateMap();
