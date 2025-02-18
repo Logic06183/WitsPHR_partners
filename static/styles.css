@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 20px;
     background-color: #f8f9fa;
+    color: #2c3e50;
 }
 
 .container {
@@ -14,26 +15,29 @@ body {
 /* Header styles */
 h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     color: #2c3e50;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 /* Map container styles */
 .map-container {
-    height: 600px;
-    margin-bottom: 20px;
-    background-color: white;
+    background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    height: 75vh;
+    min-height: 600px;
+    margin-bottom: 20px;
     overflow: hidden;
 }
 
 /* Controls container */
 .controls {
+    background: white;
     padding: 20px;
-    background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     margin-bottom: 20px;
 }
 
@@ -55,44 +59,48 @@ h1 {
 /* Filter group styles */
 .filter-group {
     margin-bottom: 15px;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 4px;
+}
+
+.filter-group:last-child {
+    margin-bottom: 0;
 }
 
 .filter-group label {
-    margin-right: 15px;
+    display: inline-block;
+    margin-right: 20px;
     font-size: 14px;
 }
 
-.filter-group label:first-child {
+.filter-group label strong {
     display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
+    margin-bottom: 8px;
     color: #2c3e50;
 }
 
 .filter-group input[type="checkbox"] {
-    margin-right: 5px;
+    margin-right: 6px;
 }
 
 /* Region tabs styles */
 .region-tabs {
+    display: flex;
+    gap: 10px;
     margin-bottom: 20px;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
+    flex-wrap: wrap;
 }
 
 .tab-button {
-    background: #f8f9fa;
+    padding: 8px 16px;
+    background: white;
     border: 1px solid #dee2e6;
     border-radius: 4px;
-    padding: 8px 16px;
-    margin-right: 8px;
     cursor: pointer;
     font-size: 14px;
     color: #495057;
     transition: all 0.2s ease;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
 }
 
 .tab-button:hover {
@@ -108,16 +116,16 @@ h1 {
 
 /* Statistics panel styles */
 .stats-panel {
+    background: white;
     padding: 20px;
-    background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .stats-panel h3 {
-    margin-top: 0;
+    margin: 0 0 15px 0;
+    font-size: 16px;
     color: #2c3e50;
-    margin-bottom: 15px;
 }
 
 .stats-panel p {
@@ -126,30 +134,63 @@ h1 {
     color: #495057;
 }
 
+/* Label toggle instruction */
+.label-instruction {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 13px;
+    color: #2c3e50;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.label-instruction:hover {
+    background-color: #f8f9fa;
+}
+
+.label-instruction .icon {
+    font-size: 14px;
+    color: #666;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
-    .container {
+    body {
         padding: 10px;
     }
-    
+
+    .container {
+        padding: 0;
+    }
+
     .map-container {
         height: 400px;
     }
-    
+
     .filter-group label {
         display: block;
         margin-bottom: 8px;
     }
-    
-    .region-tabs {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    
+
     .tab-button {
-        flex: 1 1 calc(50% - 8px);
-        margin-right: 0;
-        text-align: center;
+        min-width: calc(50% - 5px);
+    }
+
+    .label-instruction {
+        right: 10px;
+        top: 10px;
+        font-size: 12px;
+        padding: 6px 10px;
     }
 }
