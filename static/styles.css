@@ -1,0 +1,72 @@
+/* Main container styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header styles */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+/* Map container styles */
+.map-container {
+    height: 600px;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Controls container */
+.controls {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+/* Project filter styles */
+.project-filter {
+    margin-top: 10px;
+}
+
+.project-filter label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Statistics panel styles */
+.stats-panel {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stats-panel h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .map-container {
+        height: 400px;
+    }
+}

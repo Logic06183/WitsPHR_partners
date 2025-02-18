@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wits Planetary Health Research Global Partners</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Wits Planetary Health Research Global Partners</h1>
+        
+        <div class="controls">
+            <label for="project-filter">Filter by Project:</label>
+            <div id="project-filter" class="project-filter"></div>
+        </div>
+        
+        <div id="map" class="map-container"></div>
+        
+        <div id="stats" class="stats-panel">
+            <h3>Partnership Statistics</h3>
+            <div id="stats-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Partner data
+        const partners = {
+            'Institution': [
+                'Aga Khan University', 'Institut de Recherche en Sciences de la Santé',
+                'London School of Hygiene and Tropical Medicine', 'University of Washington',
+                'University of Oslo', 'Karolinska University', 'South African Medical Research Council'
+            ],
+            'City': [
+                'Nairobi', 'Ouagadougou', 'London', 'Seattle', 'Oslo', 'Stockholm', 'Cape Town'
+            ],
+            'Country': [
+                'Kenya', 'Burkina Faso', 'United Kingdom', 'United States', 'Norway', 'Sweden', 'South Africa'
+            ],
+            'Region': [
+                'Africa', 'Africa', 'Europe', 'North America', 'Europe', 'Europe', 'Africa'
+            ],
+            'Projects': [
+                ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA', 'HE2AT'],
+                ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA']
+            ],
+            'Latitude': [
+                -1.2921, 12.3714, 51.5074, 47.6062, 59.9139, 59.3293, -33.9249
+            ],
+            'Longitude': [
+                36.8219, -1.5197, -0.1278, -122.3321, 10.7522, 18.0686, 18.4241
+            ]
+        };
+
+        // Project colors
+        const colors = {
+            'CHAMNHA': '#1f77b4',
+            'HE2AT': '#2ca02c',
+            'HIGH': '#ff7f0e',
+            'ENBEL': '#d62728'
+        };
+
+        // Create project filter checkboxes
+        const projectFilter = document.getElementById('project-filter');
+        Object.keys(colors).forEach(project => {
+            const label = document.createElement('label');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = project;
+            checkbox.checked = project === 'CHAMNHA';
+            checkbox.addEventListener('change', updateMap);
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(` ${project}`));
+            projectFilter.appendChild(label);
+        });
+
+        function getSelectedProjects() {
+            const checkboxes = document.querySelectorAll('#project-filter input:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function updateMap() {
+            const selectedProjects = getSelectedProjects();
+            
+            // Filter data
+            const indices = partners.Projects.reduce((acc, projects, idx) => {
+                if (projects.some(p => selectedProjects.includes(p))) {
+                    acc.push(idx);
+                }
+                return acc;
+            }, []);
+
+            const filteredData = {
+                type: 'scattergeo',
+                lon: indices.map(i => partners.Longitude[i]),
+                lat: indices.map(i => partners.Latitude[i]),
+                text: indices.map(i => `<b>${partners.Institution[i]}</b><br>${partners.City[i]}, ${partners.Country[i]}<br>Projects: ${partners.Projects[i].join(', ')}`),
+                mode: 'markers',
+                marker: {
+                    size: 12,
+                    color: indices.map(i => colors[partners.Projects[i][0]]),
+                    line: {
+                        width: 1,
+                        color: 'white'
+                    }
+                },
+                hoverinfo: 'text'
+            };
+
+            const layout = {
+                geo: {
+                    scope: 'world',
+                    projection: {
+                        type: 'equirectangular'
+                    },
+                    showland: true,
+                    showcoastlines: true,
+                    showcountries: true,
+                    showocean: true,
+                    landcolor: 'rgb(243, 243, 243)',
+                    oceancolor: 'rgb(204, 229, 255)',
+                    countrycolor: 'rgb(204, 204, 204)',
+                    coastlinecolor: 'rgb(128, 128, 128)',
+                    showframe: false
+                },
+                margin: {
+                    l: 0,
+                    r: 0,
+                    t: 0,
+                    b: 0
+                },
+                height: 600
+            };
+
+            Plotly.newPlot('map', [filteredData], layout);
+            updateStats(indices);
+        }
+
+        function updateStats(filteredIndices) {
+            const statsContent = document.getElementById('stats-content');
+            const selectedProjects = getSelectedProjects();
+            
+            statsContent.innerHTML = `
+                <p>Total Partners: ${filteredIndices.length}</p>
+                <p>Countries: ${new Set(filteredIndices.map(i => partners.Country[i])).size}</p>
+                <p>Cities: ${new Set(filteredIndices.map(i => partners.City[i])).size}</p>
+                <p>Active Projects: ${selectedProjects.length}</p>
+            `;
+        }
+
+        // Initial map update
+        updateMap();
+    </script>
+</body>
+</html>
