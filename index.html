@@ -12,8 +12,17 @@
         <h1>Wits Planetary Health Research Global Partners</h1>
         
         <div class="controls">
-            <label for="project-filter">Filter by Project:</label>
-            <div id="project-filter" class="project-filter"></div>
+            <div class="region-tabs">
+                <button class="tab-button active" data-region="global">Global View</button>
+                <button class="tab-button" data-region="africa">Africa</button>
+                <button class="tab-button" data-region="europe">Europe</button>
+                <button class="tab-button" data-region="usa">United States</button>
+            </div>
+            
+            <div class="filter-controls">
+                <label for="project-filter">Filter:</label>
+                <div id="project-filter"></div>
+            </div>
         </div>
         
         <div id="map" class="map-container"></div>
@@ -33,42 +42,76 @@
                     'Aga Khan University', 'Institut de Recherche en Sciences de la Santé',
                     'London School of Hygiene and Tropical Medicine', 'University of Washington',
                     'University of Oslo', 'Karolinska University', 'South African Medical Research Council',
+                    
                     // HE2AT Partners
-                    'University of Washington', 'University of Michigan', 'World Health Organization',
+                    'CeSHHAR', 'University of Cape Town', 'University Peleforo Gon Coulibaly',
+                    'IBM Research Africa', 'University of Michigan', 'University of Washington',
+                    
                     // HIGH Partners
-                    'University of Harare', 'University of Korhogo', 'University of Johannesburg',
-                    'Aga Khan University', 'University of Michigan', 'University of Washington',
-                    'University of Geneva', 'Lund University', 'Karolinska University',
-                    'University of Rome', 'University of Copenhagen', 'University of Graz',
-                    'University of Botswana', 'Umea University', 'University of Tartu',
+                    'Aga Khan University', 'World Health Organization',
+                    'London School of Hygiene and Tropical Medicine', 'Lunds University',
+                    'Karolinska University', 'Azienda Sanitaria Locale Roma',
+                    'Denmark Technical University', 'University of Graz',
+                    
                     // ENBEL Partners
-                    'Trinity College Dublin', 'European Commission Joint Research Centre',
-                    'The Hague University', 'University of Toulouse', 'University of Gothenburg',
-                    'University of Helsinki'
+                    'Aga Khan University', 'University of Botswana',
+                    'London School of Hygiene and Tropical Medicine', 'Umea University',
+                    'University of Graz', 'Azienda Sanitaria Locale Roma',
+                    'Tartu Ulikool', 'Folkehelseinstituttet',
+                    'Center for International Climate Research', 'Royal College of Surgeons in Ireland',
+                    'Health and Environment Alliance', 'International Red Cross Red Crescent Centre',
+                    'University Paul Sabatier Toulouse', 'Goeteborgs University',
+                    'Ilmatieteen Laitos', 'Lunds University'
                 ],
                 'City': [
                     // CHAMNHA
-                    'Nairobi', 'Ouagadougou', 'London', 'Seattle', 'Oslo', 'Stockholm', 'Cape Town',
+                    'Nairobi', 'Ouagadougou', 'London', 'Seattle', 
+                    'Oslo', 'Stockholm', 'Cape Town',
+                    
                     // HE2AT
-                    'Seattle', 'Ann Arbor', 'Geneva',
+                    'Harare', 'Cape Town', 'Korhogo',
+                    'Nairobi', 'Ann Arbor', 'Seattle',
+                    
                     // HIGH
-                    'Harare', 'Korhogo', 'Johannesburg', 'Nairobi', 'Ann Arbor', 'Seattle',
-                    'Geneva', 'Lund', 'Stockholm', 'Rome', 'Copenhagen', 'Graz',
-                    'Gaborone', 'Umea', 'Tartu',
+                    'Nairobi', 'Geneva',
+                    'London', 'Lund',
+                    'Stockholm', 'Rome',
+                    'Copenhagen', 'Graz',
+                    
                     // ENBEL
-                    'Dublin', 'Brussels', 'The Hague', 'Toulouse', 'Gothenburg', 'Helsinki'
+                    'Nairobi', 'Gaborone',
+                    'London', 'Umea',
+                    'Graz', 'Rome',
+                    'Tartu', 'Oslo',
+                    'Oslo', 'Dublin',
+                    'Brussels', 'The Hague',
+                    'Toulouse', 'Gothenburg',
+                    'Helsinki', 'Lund'
                 ],
                 'Projects': [
-                    // CHAMNHA
-                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'],
-                    // HE2AT
+                    // CHAMNHA (7)
+                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'],
+                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'],
+                    
+                    // HE2AT (6)
                     ['HE2AT'], ['HE2AT'], ['HE2AT'],
-                    // HIGH
-                    ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'],
-                    ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'],
-                    ['HIGH'], ['HIGH'], ['HIGH'],
-                    // ENBEL
-                    ['ENBEL'], ['ENBEL'], ['ENBEL'], ['ENBEL'], ['ENBEL'], ['ENBEL']
+                    ['HE2AT'], ['HE2AT'], ['HE2AT'],
+                    
+                    // HIGH (8)
+                    ['HIGH'], ['HIGH'],
+                    ['HIGH'], ['HIGH'],
+                    ['HIGH'], ['HIGH'],
+                    ['HIGH'], ['HIGH'],
+                    
+                    // ENBEL (16)
+                    ['ENBEL'], ['ENBEL'],
+                    ['ENBEL'], ['ENBEL'],
+                    ['ENBEL'], ['ENBEL'],
+                    ['ENBEL'], ['ENBEL'],
+                    ['ENBEL'], ['ENBEL'],
+                    ['ENBEL'], ['ENBEL'],
+                    ['ENBEL'], ['ENBEL'],
+                    ['ENBEL'], ['ENBEL']
                 ]
             },
             funders: {
@@ -96,11 +139,10 @@
             'Oslo': [59.9139, 10.7522],
             'Stockholm': [59.3293, 18.0686],
             'Cape Town': [-33.9249, 18.4241],
-            'Ann Arbor': [42.2808, -83.7430],
-            'Geneva': [46.2044, 6.1432],
             'Harare': [-17.8252, 31.0335],
             'Korhogo': [9.4557, -5.6290],
-            'Johannesburg': [-26.2041, 28.0473],
+            'Ann Arbor': [42.2808, -83.7430],
+            'Geneva': [46.2044, 6.1432],
             'Lund': [55.7047, 13.1910],
             'Rome': [41.9028, 12.4964],
             'Copenhagen': [55.6761, 12.5683],
@@ -125,6 +167,48 @@
             'ENBEL': '#d62728',    // Red
             'Funder': '#9467bd'    // Purple
         };
+
+        // Region configurations
+        const regions = {
+            global: {
+                center: { lon: 15, lat: 30 },
+                zoom: 1.5
+            },
+            africa: {
+                center: { lon: 20, lat: 0 },
+                zoom: 2.5,
+                lats: [-40, 40],
+                lons: [-20, 60]
+            },
+            europe: {
+                center: { lon: 15, lat: 55 },
+                zoom: 3,
+                lats: [35, 75],
+                lons: [-10, 40]
+            },
+            usa: {
+                center: { lon: -98, lat: 40 },
+                zoom: 3.5,
+                lats: [25, 50],
+                lons: [-125, -65]
+            }
+        };
+
+        // Initialize active region
+        let activeRegion = 'global';
+
+        // Add click handlers for region tabs
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Update active tab
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // Update map
+                activeRegion = e.target.dataset.region;
+                updateMap(activeRegion);
+            });
+        });
 
         // Create filter checkboxes
         const projectFilter = document.getElementById('project-filter');
@@ -173,137 +257,226 @@
             };
         }
 
-        function createTrace(items, type) {
-            const markers = [];
-            const seen = new Set();
+        function updateMap(region = 'global') {
+            const view = regions[region];
+            
+            // Configure text visibility based on view
+            const textposition = region === 'global' ? 'none' : 'top';
+            const hoverinfo = region === 'global' ? 'text' : 'text+name';
+            
+            // Filter data based on region
+            const filteredData = filterDataByRegion(data, region);
+            
+            // Create partner traces
+            const partnerTraces = createTraces(
+                filteredData.partners,
+                'circle',
+                'Partners',
+                'rgba(44, 62, 80, 0.8)',
+                region === 'global' ? 6 : 8,
+                textposition,
+                hoverinfo
+            );
 
-            items.Institution.forEach((inst, idx) => {
-                const city = items.City[idx];
-                const key = `${inst}-${city}`;
-                
-                if (!seen.has(key)) {
-                    const coords = coordinates[city];
-                    const projects = items.Projects[idx];
-                    
-                    markers.push({
-                        lon: coords[1],
-                        lat: coords[0],
-                        institution: inst,
-                        city: city,
-                        projects: projects
-                    });
-                    
-                    seen.add(key);
-                }
-            });
-
-            return {
-                type: 'scattergeo',
-                lon: markers.map(m => m.lon),
-                lat: markers.map(m => m.lat),
-                text: markers.map(m => 
-                    `<b>${m.institution}</b><br>${m.city}<br>Projects: ${m.projects.join(', ')}`
-                ),
-                name: type,
-                mode: 'markers',
-                marker: {
-                    size: type === 'Funders' ? 15 : 10,
-                    symbol: type === 'Funders' ? 'star' : 'circle',
-                    color: type === 'Funders' ? colors.Funder : markers.map(m => colors[m.projects[0]]),
-                    line: {
-                        width: 1,
-                        color: 'white'
-                    }
-                },
-                hoverinfo: 'text'
-            };
-        }
-
-        function updateMap() {
-            const filters = getSelectedFilters();
-            const traces = [];
-
-            if (filters.layers.includes('partners')) {
-                const filteredPartners = {
-                    Institution: [],
-                    City: [],
-                    Projects: []
-                };
-
-                data.partners.Institution.forEach((inst, idx) => {
-                    const projects = data.partners.Projects[idx];
-                    if (projects.some(p => filters.projects.includes(p))) {
-                        filteredPartners.Institution.push(inst);
-                        filteredPartners.City.push(data.partners.City[idx]);
-                        filteredPartners.Projects.push(projects);
-                    }
-                });
-
-                traces.push(createTrace(filteredPartners, 'Partners'));
-            }
-
-            if (filters.layers.includes('funders')) {
-                const filteredFunders = {
-                    Institution: [],
-                    City: [],
-                    Projects: []
-                };
-
-                data.funders.Institution.forEach((inst, idx) => {
-                    const projects = data.funders.Projects[idx];
-                    if (projects.some(p => filters.projects.includes(p))) {
-                        filteredFunders.Institution.push(inst);
-                        filteredFunders.City.push(data.funders.City[idx]);
-                        filteredFunders.Projects.push(projects);
-                    }
-                });
-
-                traces.push(createTrace(filteredFunders, 'Funders'));
-            }
+            // Create funder traces with more subtle styling
+            const funderTraces = createTraces(
+                filteredData.funders,
+                'diamond',
+                'Funders',
+                'rgba(52, 152, 219, 0.8)',
+                region === 'global' ? 7 : 9,
+                textposition,
+                hoverinfo
+            );
 
             const layout = {
-                geo: {
-                    scope: 'world',
-                    projection: {
-                        type: 'equirectangular'
-                    },
-                    showland: true,
-                    showcoastlines: true,
-                    showcountries: true,
-                    showocean: true,
-                    landcolor: 'rgb(243, 243, 243)',
-                    oceancolor: 'rgb(204, 229, 255)',
-                    countrycolor: 'rgb(204, 204, 204)',
-                    coastlinecolor: 'rgb(128, 128, 128)',
-                    showframe: false,
-                    center: {
-                        lon: 15,
-                        lat: 30
-                    }
-                },
                 showlegend: true,
                 legend: {
                     x: 0,
                     y: 1,
-                    bgcolor: 'rgba(255, 255, 255, 0.8)'
+                    bgcolor: 'rgba(255, 255, 255, 0.9)',
+                    bordercolor: '#e0e0e0',
+                    borderwidth: 1,
+                    font: {
+                        family: 'Arial, sans-serif',
+                        size: 12,
+                        color: '#2c3e50'
+                    }
+                },
+                geo: {
+                    scope: region === 'usa' ? 'usa' : 'world',
+                    projection: {
+                        type: region === 'usa' ? 'albers usa' : 'mercator'
+                    },
+                    showland: true,
+                    showocean: true,
+                    showlakes: true,
+                    showcountries: true,
+                    showcoastlines: true,
+                    coastlinecolor: 'rgb(200, 200, 200)',
+                    oceancolor: 'rgb(240, 245, 255)',
+                    landcolor: 'rgb(250, 250, 250)',
+                    countrycolor: 'rgb(220, 220, 220)',
+                    lonaxis: {
+                        gridcolor: 'rgb(240, 240, 240)',
+                        gridwidth: 0.5,
+                        range: view.lons
+                    },
+                    lataxis: {
+                        gridcolor: 'rgb(240, 240, 240)',
+                        gridwidth: 0.5,
+                        range: view.lats
+                    },
+                    center: view.center,
+                    zoom: view.zoom
                 },
                 margin: {
                     l: 0,
                     r: 0,
-                    t: 30,
+                    t: 0,
                     b: 0
                 },
-                height: 600
+                hoverlabel: {
+                    bgcolor: 'white',
+                    font: {
+                        family: 'Arial, sans-serif',
+                        size: 12,
+                        color: '#2c3e50'
+                    },
+                    bordercolor: '#e0e0e0',
+                    align: 'left'
+                },
+                paper_bgcolor: 'rgb(255, 255, 255)',
+                plot_bgcolor: 'rgb(255, 255, 255)',
+                font: {
+                    family: 'Arial, sans-serif',
+                    size: 12,
+                    color: '#2c3e50'
+                },
+                annotations: []  // Clear any existing annotations
             };
 
-            Plotly.newPlot('map', traces, layout);
-            updateStats(traces);
+            Plotly.newPlot('map', [...partnerTraces, ...funderTraces], layout, { 
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                displaylogo: false
+            });
+            updateStats([...partnerTraces, ...funderTraces]);
+        }
+
+        function filterDataByRegion(data, region) {
+            if (region === 'global') return data;
+
+            const view = regions[region];
+            const filtered = {
+                partners: {
+                    Institution: [],
+                    City: [],
+                    Projects: []
+                },
+                funders: {
+                    Institution: [],
+                    City: [],
+                    Projects: []
+                }
+            };
+
+            // Helper function to check if coordinates are in region bounds
+            const isInRegion = (city) => {
+                const coords = coordinates[city];
+                return coords[0] >= view.lats[0] && coords[0] <= view.lats[1] &&
+                       coords[1] >= view.lons[0] && coords[1] <= view.lons[1];
+            };
+
+            // Filter partners
+            data.partners.Institution.forEach((inst, idx) => {
+                if (isInRegion(data.partners.City[idx])) {
+                    filtered.partners.Institution.push(inst);
+                    filtered.partners.City.push(data.partners.City[idx]);
+                    filtered.partners.Projects.push(data.partners.Projects[idx]);
+                }
+            });
+
+            // Filter funders
+            data.funders.Institution.forEach((inst, idx) => {
+                if (isInRegion(data.funders.City[idx])) {
+                    filtered.funders.Institution.push(inst);
+                    filtered.funders.City.push(data.funders.City[idx]);
+                    filtered.funders.Projects.push(data.funders.Projects[idx]);
+                }
+            });
+
+            return filtered;
+        }
+
+        function createTraces(data, symbol, name, color, size, textposition, hoverinfo) {
+            const uniqueProjects = [...new Set(data.Projects.flat())];
+            
+            return uniqueProjects.map(project => {
+                const indices = data.Projects.map((p, i) => p.includes(project) ? i : -1).filter(i => i !== -1);
+                
+                // Create a simplified institution name for labels
+                const getShortName = (name) => {
+                    // Remove common words to shorten labels
+                    return name.replace(/(University|of|The|Institute|Center|Centre|Research|International)/g, '')
+                              .replace(/\s+/g, ' ')
+                              .trim();
+                };
+
+                const trace = {
+                    type: 'scattergeo',
+                    lon: indices.map(i => coordinates[data.City[i]][1]),
+                    lat: indices.map(i => coordinates[data.City[i]][0]),
+                    text: indices.map(i => {
+                        const institution = data.Institution[i];
+                        const city = data.City[i];
+                        const projects = data.Projects[i].join(', ');
+                        return `<b>${institution}</b><br>City: ${city}<br>Project: ${projects}`;
+                    }),
+                    name: `${name} (${project})`,
+                    marker: {
+                        size: size,
+                        symbol: symbol,
+                        color: color,
+                        line: {
+                            width: 1,
+                            color: 'white'
+                        }
+                    },
+                    mode: textposition === 'none' ? 'markers' : 'markers+text',
+                    textposition: textposition,
+                    hoverinfo: hoverinfo,
+                    showlegend: true,
+                    textfont: {
+                        family: 'Arial, sans-serif',
+                        size: 10,
+                        color: 'rgba(44, 62, 80, 0.75)'
+                    }
+                };
+
+                if (textposition !== 'none') {
+                    // Use shortened names for labels
+                    trace.text = indices.map(i => getShortName(data.Institution[i]));
+                    
+                    // Add text template for better label formatting
+                    trace.texttemplate = '%{text}';
+                    
+                    // Adjust text positioning to reduce overlap
+                    trace.textposition = indices.map((_, idx) => {
+                        // Alternate between top and bottom positions
+                        return idx % 2 === 0 ? 'top center' : 'bottom center';
+                    });
+                }
+
+                return trace;
+            });
         }
 
         function updateStats(traces) {
             const statsContent = document.getElementById('stats-content');
-            const partners = traces.find(t => t.name === 'Partners');
-            const funders = traces.find(t => t.name === 'Funders');
+            const partners = traces.find(t => t.name.startsWith('Partners'));
+            const funders = traces.find(t => t.name.startsWith('Funders'));
             
             const stats = {
                 partners: partners ? partners.lon.length : 0,
@@ -313,8 +486,8 @@
                     ...(funders ? funders.text.map(t => t.split('<br>')[1].split(',')[0].trim()) : [])
                 ]).size,
                 projects: new Set([
-                    ...(partners ? partners.text.flatMap(t => t.split('Projects: ')[1].split(', ')) : []),
-                    ...(funders ? funders.text.flatMap(t => t.split('Projects: ')[1].split(', ')) : [])
+                    ...(partners ? partners.text.flatMap(t => t.split('Project: ')[1].split(', ')) : []),
+                    ...(funders ? funders.text.flatMap(t => t.split('Project: ')[1].split(', ')) : [])
                 ]).size
             };
             
