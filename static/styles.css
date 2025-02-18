@@ -47,6 +47,27 @@ h1 {
     margin-bottom: 10px;
 }
 
+/* Filter group styles */
+.filter-group {
+    margin-bottom: 15px;
+}
+
+.filter-group label {
+    margin-right: 15px;
+    font-size: 14px;
+}
+
+.filter-group label:first-child {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.filter-group input[type="checkbox"] {
+    margin-right: 5px;
+}
+
 /* Statistics panel styles */
 .stats-panel {
     padding: 20px;
@@ -68,5 +89,10 @@ h1 {
     
     .map-container {
         height: 400px;
+    }
+    
+    .filter-group label {
+        display: block;
+        margin-bottom: 5px;
     }
 }

@@ -25,81 +25,191 @@
     </div>
 
     <script>
-        // Partner data
-        const partners = {
-            'Institution': [
-                'Aga Khan University', 'Institut de Recherche en Sciences de la Santé',
-                'London School of Hygiene and Tropical Medicine', 'University of Washington',
-                'University of Oslo', 'Karolinska University', 'South African Medical Research Council'
-            ],
-            'City': [
-                'Nairobi', 'Ouagadougou', 'London', 'Seattle', 'Oslo', 'Stockholm', 'Cape Town'
-            ],
-            'Country': [
-                'Kenya', 'Burkina Faso', 'United Kingdom', 'United States', 'Norway', 'Sweden', 'South Africa'
-            ],
-            'Region': [
-                'Africa', 'Africa', 'Europe', 'North America', 'Europe', 'Europe', 'Africa'
-            ],
-            'Projects': [
-                ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA', 'HE2AT'],
-                ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA']
-            ],
-            'Latitude': [
-                -1.2921, 12.3714, 51.5074, 47.6062, 59.9139, 59.3293, -33.9249
-            ],
-            'Longitude': [
-                36.8219, -1.5197, -0.1278, -122.3321, 10.7522, 18.0686, 18.4241
-            ]
+        // Partner and funder data
+        const data = {
+            partners: {
+                'Institution': [
+                    // CHAMNHA Partners
+                    'Aga Khan University', 'Institut de Recherche en Sciences de la Santé',
+                    'London School of Hygiene and Tropical Medicine', 'University of Washington',
+                    'University of Oslo', 'Karolinska University', 'South African Medical Research Council',
+                    // HE2AT Partners
+                    'University of Washington', 'University of Michigan', 'World Health Organization',
+                    // HIGH Partners
+                    'University of Harare', 'University of Korhogo', 'University of Johannesburg',
+                    'Aga Khan University', 'University of Michigan', 'University of Washington',
+                    'University of Geneva', 'Lund University', 'Karolinska University',
+                    'University of Rome', 'University of Copenhagen', 'University of Graz',
+                    'University of Botswana', 'Umea University', 'University of Tartu',
+                    // ENBEL Partners
+                    'Trinity College Dublin', 'European Commission Joint Research Centre',
+                    'The Hague University', 'University of Toulouse', 'University of Gothenburg',
+                    'University of Helsinki'
+                ],
+                'City': [
+                    // CHAMNHA
+                    'Nairobi', 'Ouagadougou', 'London', 'Seattle', 'Oslo', 'Stockholm', 'Cape Town',
+                    // HE2AT
+                    'Seattle', 'Ann Arbor', 'Geneva',
+                    // HIGH
+                    'Harare', 'Korhogo', 'Johannesburg', 'Nairobi', 'Ann Arbor', 'Seattle',
+                    'Geneva', 'Lund', 'Stockholm', 'Rome', 'Copenhagen', 'Graz',
+                    'Gaborone', 'Umea', 'Tartu',
+                    // ENBEL
+                    'Dublin', 'Brussels', 'The Hague', 'Toulouse', 'Gothenburg', 'Helsinki'
+                ],
+                'Projects': [
+                    // CHAMNHA
+                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'],
+                    // HE2AT
+                    ['HE2AT'], ['HE2AT'], ['HE2AT'],
+                    // HIGH
+                    ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'],
+                    ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'], ['HIGH'],
+                    ['HIGH'], ['HIGH'], ['HIGH'],
+                    // ENBEL
+                    ['ENBEL'], ['ENBEL'], ['ENBEL'], ['ENBEL'], ['ENBEL'], ['ENBEL']
+                ]
+            },
+            funders: {
+                'Institution': [
+                    'UK Research and Innovation', 'Clinical Research Network Norway',
+                    'Forte', 'National Institutes of Health',
+                    'European Union Horizon Programme'
+                ],
+                'City': [
+                    'London', 'Oslo', 'Stockholm', 'Bethesda', 'Brussels'
+                ],
+                'Projects': [
+                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA', 'HE2AT'],
+                    ['HIGH', 'ENBEL']
+                ]
+            }
+        };
+
+        // Coordinates lookup
+        const coordinates = {
+            'Nairobi': [-1.2921, 36.8219],
+            'Ouagadougou': [12.3714, -1.5197],
+            'London': [51.5074, -0.1278],
+            'Seattle': [47.6062, -122.3321],
+            'Oslo': [59.9139, 10.7522],
+            'Stockholm': [59.3293, 18.0686],
+            'Cape Town': [-33.9249, 18.4241],
+            'Ann Arbor': [42.2808, -83.7430],
+            'Geneva': [46.2044, 6.1432],
+            'Harare': [-17.8252, 31.0335],
+            'Korhogo': [9.4557, -5.6290],
+            'Johannesburg': [-26.2041, 28.0473],
+            'Lund': [55.7047, 13.1910],
+            'Rome': [41.9028, 12.4964],
+            'Copenhagen': [55.6761, 12.5683],
+            'Graz': [47.0707, 15.4395],
+            'Gaborone': [-24.6282, 25.9231],
+            'Umea': [63.8258, 20.2630],
+            'Tartu': [58.3780, 26.7290],
+            'Dublin': [53.3498, -6.2603],
+            'Brussels': [50.8503, 4.3517],
+            'The Hague': [52.0705, 4.3007],
+            'Toulouse': [43.6047, 1.4442],
+            'Gothenburg': [57.7089, 11.9746],
+            'Helsinki': [60.1699, 24.9384],
+            'Bethesda': [38.9847, -77.0947]
         };
 
         // Project colors
         const colors = {
-            'CHAMNHA': '#1f77b4',
-            'HE2AT': '#2ca02c',
-            'HIGH': '#ff7f0e',
-            'ENBEL': '#d62728'
+            'CHAMNHA': '#1f77b4',  // Blue
+            'HE2AT': '#2ca02c',    // Green
+            'HIGH': '#ff7f0e',     // Orange
+            'ENBEL': '#d62728',    // Red
+            'Funder': '#9467bd'    // Purple
         };
 
-        // Create project filter checkboxes
+        // Create filter checkboxes
         const projectFilter = document.getElementById('project-filter');
-        Object.keys(colors).forEach(project => {
+        
+        // Add layer type filter
+        const layerDiv = document.createElement('div');
+        layerDiv.className = 'filter-group';
+        layerDiv.innerHTML = '<label><b>Layer Type:</b></label>';
+        const layerTypes = ['Partners', 'Funders'];
+        layerTypes.forEach(type => {
+            const label = document.createElement('label');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = type.toLowerCase();
+            checkbox.checked = true;
+            checkbox.className = 'layer-checkbox';
+            checkbox.addEventListener('change', updateMap);
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(` ${type}`));
+            layerDiv.appendChild(label);
+        });
+        projectFilter.appendChild(layerDiv);
+
+        // Add project filter
+        const projectDiv = document.createElement('div');
+        projectDiv.className = 'filter-group';
+        projectDiv.innerHTML = '<label><b>Projects:</b></label>';
+        Object.keys(colors).filter(k => k !== 'Funder').forEach(project => {
             const label = document.createElement('label');
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = project;
-            checkbox.checked = project === 'CHAMNHA';
+            checkbox.checked = true;
+            checkbox.className = 'project-checkbox';
             checkbox.addEventListener('change', updateMap);
             label.appendChild(checkbox);
             label.appendChild(document.createTextNode(` ${project}`));
-            projectFilter.appendChild(label);
+            projectDiv.appendChild(label);
         });
+        projectFilter.appendChild(projectDiv);
 
-        function getSelectedProjects() {
-            const checkboxes = document.querySelectorAll('#project-filter input:checked');
-            return Array.from(checkboxes).map(cb => cb.value);
+        function getSelectedFilters() {
+            return {
+                layers: Array.from(document.querySelectorAll('.layer-checkbox:checked')).map(cb => cb.value),
+                projects: Array.from(document.querySelectorAll('.project-checkbox:checked')).map(cb => cb.value)
+            };
         }
 
-        function updateMap() {
-            const selectedProjects = getSelectedProjects();
-            
-            // Filter data
-            const indices = partners.Projects.reduce((acc, projects, idx) => {
-                if (projects.some(p => selectedProjects.includes(p))) {
-                    acc.push(idx);
-                }
-                return acc;
-            }, []);
+        function createTrace(items, type) {
+            const markers = [];
+            const seen = new Set();
 
-            const filteredData = {
+            items.Institution.forEach((inst, idx) => {
+                const city = items.City[idx];
+                const key = `${inst}-${city}`;
+                
+                if (!seen.has(key)) {
+                    const coords = coordinates[city];
+                    const projects = items.Projects[idx];
+                    
+                    markers.push({
+                        lon: coords[1],
+                        lat: coords[0],
+                        institution: inst,
+                        city: city,
+                        projects: projects
+                    });
+                    
+                    seen.add(key);
+                }
+            });
+
+            return {
                 type: 'scattergeo',
-                lon: indices.map(i => partners.Longitude[i]),
-                lat: indices.map(i => partners.Latitude[i]),
-                text: indices.map(i => `<b>${partners.Institution[i]}</b><br>${partners.City[i]}, ${partners.Country[i]}<br>Projects: ${partners.Projects[i].join(', ')}`),
+                lon: markers.map(m => m.lon),
+                lat: markers.map(m => m.lat),
+                text: markers.map(m => 
+                    `<b>${m.institution}</b><br>${m.city}<br>Projects: ${m.projects.join(', ')}`
+                ),
+                name: type,
                 mode: 'markers',
                 marker: {
-                    size: 12,
-                    color: indices.map(i => colors[partners.Projects[i][0]]),
+                    size: type === 'Funders' ? 15 : 10,
+                    symbol: type === 'Funders' ? 'star' : 'circle',
+                    color: type === 'Funders' ? colors.Funder : markers.map(m => colors[m.projects[0]]),
                     line: {
                         width: 1,
                         color: 'white'
@@ -107,6 +217,49 @@
                 },
                 hoverinfo: 'text'
             };
+        }
+
+        function updateMap() {
+            const filters = getSelectedFilters();
+            const traces = [];
+
+            if (filters.layers.includes('partners')) {
+                const filteredPartners = {
+                    Institution: [],
+                    City: [],
+                    Projects: []
+                };
+
+                data.partners.Institution.forEach((inst, idx) => {
+                    const projects = data.partners.Projects[idx];
+                    if (projects.some(p => filters.projects.includes(p))) {
+                        filteredPartners.Institution.push(inst);
+                        filteredPartners.City.push(data.partners.City[idx]);
+                        filteredPartners.Projects.push(projects);
+                    }
+                });
+
+                traces.push(createTrace(filteredPartners, 'Partners'));
+            }
+
+            if (filters.layers.includes('funders')) {
+                const filteredFunders = {
+                    Institution: [],
+                    City: [],
+                    Projects: []
+                };
+
+                data.funders.Institution.forEach((inst, idx) => {
+                    const projects = data.funders.Projects[idx];
+                    if (projects.some(p => filters.projects.includes(p))) {
+                        filteredFunders.Institution.push(inst);
+                        filteredFunders.City.push(data.funders.City[idx]);
+                        filteredFunders.Projects.push(projects);
+                    }
+                });
+
+                traces.push(createTrace(filteredFunders, 'Funders'));
+            }
 
             const layout = {
                 geo: {
@@ -122,30 +275,54 @@
                     oceancolor: 'rgb(204, 229, 255)',
                     countrycolor: 'rgb(204, 204, 204)',
                     coastlinecolor: 'rgb(128, 128, 128)',
-                    showframe: false
+                    showframe: false,
+                    center: {
+                        lon: 15,
+                        lat: 30
+                    }
+                },
+                showlegend: true,
+                legend: {
+                    x: 0,
+                    y: 1,
+                    bgcolor: 'rgba(255, 255, 255, 0.8)'
                 },
                 margin: {
                     l: 0,
                     r: 0,
-                    t: 0,
+                    t: 30,
                     b: 0
                 },
                 height: 600
             };
 
-            Plotly.newPlot('map', [filteredData], layout);
-            updateStats(indices);
+            Plotly.newPlot('map', traces, layout);
+            updateStats(traces);
         }
 
-        function updateStats(filteredIndices) {
+        function updateStats(traces) {
             const statsContent = document.getElementById('stats-content');
-            const selectedProjects = getSelectedProjects();
+            const partners = traces.find(t => t.name === 'Partners');
+            const funders = traces.find(t => t.name === 'Funders');
+            
+            const stats = {
+                partners: partners ? partners.lon.length : 0,
+                funders: funders ? funders.lon.length : 0,
+                countries: new Set([
+                    ...(partners ? partners.text.map(t => t.split('<br>')[1].split(',')[0].trim()) : []),
+                    ...(funders ? funders.text.map(t => t.split('<br>')[1].split(',')[0].trim()) : [])
+                ]).size,
+                projects: new Set([
+                    ...(partners ? partners.text.flatMap(t => t.split('Projects: ')[1].split(', ')) : []),
+                    ...(funders ? funders.text.flatMap(t => t.split('Projects: ')[1].split(', ')) : [])
+                ]).size
+            };
             
             statsContent.innerHTML = `
-                <p>Total Partners: ${filteredIndices.length}</p>
-                <p>Countries: ${new Set(filteredIndices.map(i => partners.Country[i])).size}</p>
-                <p>Cities: ${new Set(filteredIndices.map(i => partners.City[i])).size}</p>
-                <p>Active Projects: ${selectedProjects.length}</p>
+                <p>Research Partners: ${stats.partners}</p>
+                <p>Funding Organizations: ${stats.funders}</p>
+                <p>Countries: ${stats.countries}</p>
+                <p>Active Projects: ${stats.projects}</p>
             `;
         }
 
