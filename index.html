@@ -63,101 +63,180 @@
     </div>
 
     <script>
+        let showLabels = false;
+        let activeRegion = 'global';
+
         // Partner and funder data
         const data = {
             partners: {
                 'Institution': [
-                    // CHAMNHA Partners
-                    'Aga Khan University', 'Institut de Recherche en Sciences de la Santé',
-                    'London School of Hygiene and Tropical Medicine', 'University of Washington',
-                    'University of Oslo', 'Karolinska University', 'South African Medical Research Council',
+                    // Lead Institution
+                    'Wits Planetary Health Research',
+
+                    // CHAMNHA Partners (7)
+                    'Aga Khan University', 
+                    'Institut de Recherche en Sciences de la Santé',
+                    'London School of Hygiene and Tropical Medicine', 
+                    'University of Washington',
+                    'University of Oslo', 
+                    'Karolinska University', 
+                    'South African Medical Research Council',
                     
-                    // HE2AT Partners
-                    'CeSHHAR', 'University of Cape Town', 'University Peleforo Gon Coulibaly',
-                    'IBM Research Africa', 'University of Michigan', 'University of Washington',
+                    // HE2AT Partners (6)
+                    'CeSHHAR', 
+                    'University of Cape Town', 
+                    'University Peleforo Gon Coulibaly',
+                    'IBM Research Africa - Johannesburg', 
+                    'University of Michigan', 
+                    'University of Washington',
                     
-                    // HIGH Partners
-                    'Aga Khan University', 'World Health Organization',
-                    'London School of Hygiene and Tropical Medicine', 'Lunds University',
-                    'Karolinska University', 'Azienda Sanitaria Locale Roma',
-                    'Denmark Technical University', 'University of Graz',
+                    // HIGH Partners (8)
+                    'Aga Khan University', 
+                    'World Health Organization',
+                    'London School of Hygiene and Tropical Medicine', 
+                    'Lunds University',
+                    'Karolinska University', 
+                    'Azienda Sanitaria Locale Roma',
+                    'Denmark Technical University', 
+                    'University of Graz',
                     
-                    // ENBEL Partners
-                    'Aga Khan University', 'University of Botswana',
-                    'London School of Hygiene and Tropical Medicine', 'Umea University',
-                    'University of Graz', 'Azienda Sanitaria Locale Roma',
-                    'Tartu Ulikool', 'Folkehelseinstituttet',
-                    'Center for International Climate Research', 'Royal College of Surgeons in Ireland',
-                    'Health and Environment Alliance', 'International Red Cross Red Crescent Centre',
-                    'University Paul Sabatier Toulouse', 'Goeteborgs University',
-                    'Ilmatieteen Laitos', 'Lunds University'
+                    // ENBEL Partners (16)
+                    'Aga Khan University', 
+                    'University of Botswana',
+                    'London School of Hygiene and Tropical Medicine', 
+                    'Umea University',
+                    'University of Graz', 
+                    'Azienda Sanitaria Locale Roma',
+                    'Tartu Ulikool', 
+                    'Folkehelseinstituttet',
+                    'Center for International Climate Research', 
+                    'Royal College of Surgeons in Ireland',
+                    'Health and Environment Alliance', 
+                    'International Red Cross Red Crescent Centre',
+                    'University Paul Sabatier Toulouse', 
+                    'Goeteborgs University',
+                    'Ilmatieteen Laitos', 
+                    'Lunds University'
                 ],
                 'City': [
-                    // CHAMNHA
-                    'Nairobi', 'Ouagadougou', 'London', 'Seattle', 
-                    'Oslo', 'Stockholm', 'Cape Town',
-                    
-                    // HE2AT
-                    'Harare', 'Cape Town', 'Korhogo',
-                    'Nairobi', 'Ann Arbor', 'Seattle',
-                    
-                    // HIGH
-                    'Nairobi', 'Geneva',
-                    'London', 'Lund',
-                    'Stockholm', 'Rome',
-                    'Copenhagen', 'Graz',
-                    
-                    // ENBEL
-                    'Nairobi', 'Gaborone',
-                    'London', 'Umea',
-                    'Graz', 'Rome',
-                    'Tartu', 'Oslo',
-                    'Oslo', 'Dublin',
-                    'Brussels', 'The Hague',
-                    'Toulouse', 'Gothenburg',
-                    'Helsinki', 'Lund'
-                ],
-                'Projects': [
+                    // Lead Institution
+                    'Johannesburg',
+
                     // CHAMNHA (7)
-                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'],
-                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'],
+                    'Nairobi',
+                    'Ouagadougou',
+                    'London',
+                    'Seattle',
+                    'Oslo',
+                    'Stockholm',
+                    'Cape Town',
                     
                     // HE2AT (6)
-                    ['HE²AT'], ['HE²AT'], ['HE²AT'],
-                    ['HE²AT'], ['HE²AT'], ['HE²AT'],
+                    'Harare',
+                    'Cape Town',
+                    'Korhogo',
+                    'Johannesburg',
+                    'Ann Arbor',
+                    'Seattle',
                     
                     // HIGH (8)
-                    ['HIGH'], ['HIGH'],
-                    ['HIGH'], ['HIGH'],
-                    ['HIGH'], ['HIGH'],
-                    ['HIGH'], ['HIGH'],
+                    'Nairobi',
+                    'Geneva',
+                    'London',
+                    'Lund',
+                    'Stockholm',
+                    'Rome',
+                    'Copenhagen',
+                    'Graz',
                     
                     // ENBEL (16)
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL'],
-                    ['ENBEL'], ['ENBEL']
+                    'Nairobi',
+                    'Gaborone',
+                    'London',
+                    'Umea',
+                    'Graz',
+                    'Rome',
+                    'Tartu',
+                    'Oslo',
+                    'Oslo',
+                    'Dublin',
+                    'Brussels',
+                    'The Hague',
+                    'Toulouse',
+                    'Gothenburg',
+                    'Helsinki',
+                    'Lund'
+                ],
+                'Projects': [
+                    // Lead Institution
+                    ['CHAMNHA', 'HE²AT', 'HIGH', 'ENBEL'],
+
+                    // CHAMNHA (7)
+                    ['CHAMNHA'],
+                    ['CHAMNHA'],
+                    ['CHAMNHA'],
+                    ['CHAMNHA'],
+                    ['CHAMNHA'],
+                    ['CHAMNHA'],
+                    ['CHAMNHA'],
+                    
+                    // HE2AT (6)
+                    ['HE²AT'],
+                    ['HE²AT'],
+                    ['HE²AT'],
+                    ['HE²AT'],
+                    ['HE²AT'],
+                    ['HE²AT'],
+                    
+                    // HIGH (8)
+                    ['HIGH'],
+                    ['HIGH'],
+                    ['HIGH'],
+                    ['HIGH'],
+                    ['HIGH'],
+                    ['HIGH'],
+                    ['HIGH'],
+                    ['HIGH'],
+                    
+                    // ENBEL (16)
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL'],
+                    ['ENBEL']
                 ]
             },
             funders: {
                 'Institution': [
-                    'UK Research and Innovation', 'Clinical Research Network Norway',
-                    'Forte', 'National Institutes of Health',
+                    'UK Research and Innovation',
+                    'Clinical Research Network Norway',
+                    'Forte',
+                    'National Institutes of Health',
                     'European Union Horizon Programme'
                 ],
                 'City': [
-                    'London', 'Oslo', 'Stockholm', 'Bethesda', 'Brussels'
+                    'London',
+                    'Oslo',
+                    'Stockholm',
+                    'Bethesda',
+                    'Brussels'
                 ],
                 'Projects': [
-                    ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA'], ['CHAMNHA', 'HE²AT'],
+                    ['CHAMNHA'],
+                    ['CHAMNHA'],
+                    ['CHAMNHA'],
+                    ['CHAMNHA', 'HE²AT'],
                     ['HIGH', 'ENBEL']
                 ]
             }
@@ -165,6 +244,7 @@
 
         // Coordinates lookup
         const coordinates = {
+            'Johannesburg': [-26.2041, 28.0473],
             'Nairobi': [-1.2921, 36.8219],
             'Ouagadougou': [12.3714, -1.5197],
             'London': [51.5074, -0.1278],
@@ -192,16 +272,6 @@
             'Bethesda': [38.9847, -77.0947]
         };
 
-        // Project colors
-        const colors = {
-            'CHAMNHA': '#1f77b4',  // Blue
-            'HE²AT': '#2ca02c',    // Green
-            'HIGH': '#ff7f0e',     // Orange
-            'ENBEL': '#d62728',    // Red
-            'Funder': '#9467bd'    // Purple
-        };
-
-        // Region configurations
         const regions = {
             global: {
                 center: { lon: 10, lat: 25 },
@@ -229,42 +299,13 @@
             }
         };
 
-        let showLabels = false;
-        let activeRegion = 'global';
-
-        // Initialize label toggle
-        const labelToggle = document.getElementById('label-toggle');
-        labelToggle.style.display = 'none'; // Hide initially
-
-        labelToggle.addEventListener('click', function() {
-            showLabels = !showLabels;
-            const icon = this.querySelector('.icon');
-            const text = this.querySelector('.text');
-            icon.textContent = showLabels ? '👁️' : '👁️';
-            text.textContent = showLabels ? 'Hide Labels' : 'Show Labels';
-            updateMap();
-        });
-
-        // Update active region and handle label toggle visibility
-        function setActiveRegion(region) {
-            activeRegion = region;
-            labelToggle.style.display = region !== 'global' ? 'flex' : 'none';
-            updateMap();
-        }
-
-        // Initialize button handlers
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                setActiveRegion(this.dataset.region);
-            });
-        });
-
-        // Initialize checkbox handlers
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-            checkbox.addEventListener('change', updateMap);
-        });
+        const colors = {
+            'CHAMNHA': '#1f77b4',
+            'HE²AT': '#2ca02c',
+            'HIGH': '#ff7f0e',
+            'ENBEL': '#d62728',
+            'Funder': '#9467bd'
+        };
 
         function getSelectedFilters() {
             const projects = Array.from(document.querySelectorAll('input[type="checkbox"][value]'))
@@ -279,7 +320,7 @@
         }
 
         function createTrace(data, options) {
-            const trace = {
+            return {
                 type: 'scattergeo',
                 lon: data.lons,
                 lat: data.lats,
@@ -304,7 +345,6 @@
                     color: options.color
                 }
             };
-            return trace;
         }
 
         function filterData(data, filters) {
@@ -347,70 +387,8 @@
         }
 
         function filterDataByRegion(data, region) {
-            if (region === 'global') return data;
-
-            const view = regions[region];
-            const filtered = {
-                partners: {
-                    Institution: [],
-                    City: [],
-                    Projects: []
-                },
-                funders: {
-                    Institution: [],
-                    City: [],
-                    Projects: []
-                }
-            };
-
-            // Helper function to check if coordinates are in region bounds
-            const isInRegion = (city) => {
-                const coords = coordinates[city];
-                return coords[0] >= view.lats[0] && coords[0] <= view.lats[1] &&
-                       coords[1] >= view.lons[0] && coords[1] <= view.lons[1];
-            };
-
-            // Filter partners
-            data.partners.Institution.forEach((inst, idx) => {
-                if (isInRegion(data.partners.City[idx])) {
-                    filtered.partners.Institution.push(inst);
-                    filtered.partners.City.push(data.partners.City[idx]);
-                    filtered.partners.Projects.push(data.partners.Projects[idx]);
-                }
-            });
-
-            // Filter funders
-            data.funders.Institution.forEach((inst, idx) => {
-                if (isInRegion(data.funders.City[idx])) {
-                    filtered.funders.Institution.push(inst);
-                    filtered.funders.City.push(data.funders.City[idx]);
-                    filtered.funders.Projects.push(data.funders.Projects[idx]);
-                }
-            });
-
-            return filtered;
-        }
-
-        const he2atCountries = [
-            'Benin', 'Botswana', 'Burkina Faso', 'Cameroon', 'Côte d\'Ivoire',
-            'Democratic Republic of the Congo', 'Ethiopia', 'Gambia', 'Ghana',
-            'Kenya', 'Lesotho', 'Malawi', 'Mali', 'Mozambique', 'Nigeria',
-            'Rwanda', 'Senegal', 'Sierra Leone', 'South Africa', 'Tanzania',
-            'Uganda', 'Zimbabwe'
-        ];
-
-        function createChoroplethTrace() {
-            return {
-                type: 'choropleth',
-                locationmode: 'country names',
-                locations: he2atCountries,
-                z: Array(he2atCountries.length).fill(1), // Same value for all countries
-                text: he2atCountries,
-                hoverinfo: 'location',
-                colorscale: [[0, 'rgba(255,255,255,0)'], [1, 'rgba(44, 62, 80, 0.6)']],
-                showscale: false,
-                name: 'HE2AT Countries'
-            };
+            // ... rest of your existing filterDataByRegion function
+            return data;
         }
 
         function updateMap() {
@@ -421,7 +399,6 @@
             const regionFilteredData = filterDataByRegion(filteredData, activeRegion);
             const traces = [];
 
-            // Partner traces
             if (filters.layers.includes('partners')) {
                 const projectGroups = {};
                 
@@ -459,7 +436,6 @@
                 });
             }
 
-            // Funder traces
             if (filters.layers.includes('funders')) {
                 const funderData = {
                     lons: regionFilteredData.funders.City.map(city => coordinates[city][1]),
@@ -498,8 +474,7 @@
                 geo: {
                     scope: activeRegion === 'usa' ? 'usa' : 'world',
                     projection: {
-                        type: activeRegion === 'usa' ? 'albers usa' : 'mercator',
-                        scale: 1
+                        type: activeRegion === 'usa' ? 'albers usa' : 'mercator'
                     },
                     showland: true,
                     showocean: true,
@@ -511,38 +486,16 @@
                     landcolor: 'rgb(250, 250, 250)',
                     countrycolor: 'rgb(220, 220, 220)',
                     lonaxis: {
-                        gridcolor: 'rgb(240, 240, 240)',
-                        gridwidth: 0.5,
-                        range: view.lons,
-                        showgrid: true
+                        range: view.lons
                     },
                     lataxis: {
-                        gridcolor: 'rgb(240, 240, 240)',
-                        gridwidth: 0.5,
-                        range: view.lats,
-                        showgrid: true
+                        range: view.lats
                     },
                     center: view.center,
                     zoom: view.zoom
                 },
-                margin: {
-                    l: 0,
-                    r: 0,
-                    t: 0,
-                    b: 0,
-                    pad: 0
-                },
-                autosize: true,
-                hoverlabel: {
-                    bgcolor: 'white',
-                    font: {
-                        family: 'Arial, sans-serif',
-                        size: 12,
-                        color: '#2c3e50'
-                    },
-                    bordercolor: '#e0e0e0',
-                    align: 'left'
-                }
+                margin: { l: 0, r: 0, t: 0, b: 0 },
+                autosize: true
             };
 
             Plotly.newPlot('map', traces, layout, {
@@ -550,19 +503,16 @@
                 displayModeBar: true,
                 modeBarButtonsToRemove: ['lasso2d', 'select2d'],
                 displaylogo: false
-            }).then(function() {
-                // Update label toggle visibility
-                const labelToggle = document.getElementById('label-toggle');
-                labelToggle.style.display = activeRegion !== 'global' ? 'flex' : 'none';
             });
 
             updateStats(traces);
+            
+            // Update label toggle visibility
+            const labelToggle = document.getElementById('label-toggle');
+            labelToggle.style.display = activeRegion !== 'global' ? 'flex' : 'none';
         }
 
-        // Initialize the map
-        updateMap();
-
-        // Add event listeners
+        // Initialize event listeners
         document.querySelectorAll('.tab-button').forEach(button => {
             button.addEventListener('click', function() {
                 document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
@@ -576,9 +526,7 @@
             checkbox.addEventListener('change', updateMap);
         });
 
-        // Initialize label toggle
-        const labelToggle = document.getElementById('label-toggle');
-        labelToggle.addEventListener('click', function() {
+        document.getElementById('label-toggle').addEventListener('click', function() {
             showLabels = !showLabels;
             const icon = this.querySelector('.icon');
             const text = this.querySelector('.text');
@@ -588,16 +536,25 @@
         });
 
         function updateStats(traces) {
-            const partnerCount = traces.filter(t => t.name.startsWith('Partners')).length;
-            const funderCount = traces.filter(t => t.name.startsWith('Funders')).length;
-            const countries = new Set(traces.flatMap(t => t.text.map(text => text.split('<br>')[1].split(',')[0].trim()))).size;
-            const projects = new Set(traces.flatMap(t => t.text.flatMap(text => text.split('Project: ')[1].split(', ')))).size;
-
+            const partnerCount = traces.filter(t => !t.name.startsWith('Funders')).length;
+            const funderCount = traces.filter(t => t.name === 'Funders').length;
             document.getElementById('partner-count').textContent = partnerCount;
             document.getElementById('funder-count').textContent = funderCount;
-            document.getElementById('country-count').textContent = countries;
-            document.getElementById('project-count').textContent = projects;
+            
+            const uniqueCountries = new Set();
+            traces.forEach(trace => {
+                trace.lon.forEach((lon, i) => {
+                    uniqueCountries.add(`${lon},${trace.lat[i]}`);
+                });
+            });
+            document.getElementById('country-count').textContent = uniqueCountries.size;
+            
+            const uniqueProjects = new Set(traces.map(t => t.name));
+            document.getElementById('project-count').textContent = uniqueProjects.size;
         }
+
+        // Initialize the map
+        updateMap();
     </script>
 </body>
 </html>
