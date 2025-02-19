@@ -30,14 +30,14 @@
             <div class="filter-group">
                 <label>Layers:</label>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" value="partners" checked> Partners</label>
-                    <label><input type="checkbox" value="funders" checked> Funders</label>
+                    <label><input type="checkbox" id="partners" value="partners" checked> Partners</label>
+                    <label><input type="checkbox" id="funders" value="funders" checked> Funders</label>
                 </div>
             </div>
             
             <div class="filter-group">
-                <label>View:</label>
-                <div class="button-group">
+                <label>Region:</label>
+                <div class="tab-group">
                     <button class="tab-button active" data-region="global">Global</button>
                     <button class="tab-button" data-region="africa">Africa</button>
                     <button class="tab-button" data-region="europe">Europe</button>
@@ -328,6 +328,7 @@
             'Abidjan': [5.3600, -4.0083]
         };
 
+        // Define map regions with specific bounds and centers
         const regions = {
             global: {
                 center: { lon: 15, lat: 20 },
@@ -555,20 +556,22 @@
                 }));
             }
 
+            // Update label toggle visibility and text
+            const labelToggle = document.getElementById('label-toggle');
+            labelToggle.style.display = 'flex';
+            labelToggle.querySelector('.text').textContent = showLabels ? 'Hide Labels' : 'Show Labels';
+
+            // Create the layout
             const layout = {
                 showlegend: true,
+                margin: { t: 0, b: 0, l: 0, r: 0 },
                 legend: {
                     x: 0,
                     y: 1,
                     bgcolor: 'rgba(255, 255, 255, 0.9)',
-                    bordercolor: '#e0e0e0',
+                    bordercolor: '#ddd',
                     borderwidth: 1,
-                    font: {
-                        family: 'Arial, sans-serif',
-                        size: 12,
-                        color: '#2c3e50'
-                    },
-                    itemsizing: 'constant'
+                    font: { size: 12 }
                 },
                 geo: {
                     scope: activeRegion === 'usa' ? 'usa' : 'world',
@@ -585,18 +588,34 @@
                     landcolor: 'rgb(250, 250, 250)',
                     countrycolor: 'rgb(220, 220, 220)',
                     lonaxis: {
-                        range: view.lons
+                        range: activeRegion === 'usa' ? [-125, -65] : view.lons
                     },
                     lataxis: {
-                        range: view.lats
+                        range: activeRegion === 'usa' ? [25, 50] : view.lats
                     },
-                    center: view.center,
+                    center: activeRegion === 'usa' ? { lon: -98, lat: 40 } : view.center,
                     zoom: view.zoom
-                },
-                margin: { l: 0, r: 0, t: 0, b: 0 },
-                autosize: true
+                }
             };
 
+            // If showing labels, add them to the traces
+            traces.forEach(trace => {
+                if (showLabels) {
+                    trace.mode = 'markers+text';
+                    trace.textposition = 'top center';
+                    trace.textfont = {
+                        size: activeRegion === 'global' ? 10 : 12,
+                        color: '#333'
+                    };
+                    // Only show institution name in the label
+                    trace.text = trace.text.map(t => t.split('<br>')[0]);
+                } else {
+                    trace.mode = 'markers';
+                    trace.text = trace.customdata;
+                }
+            });
+
+            // Update the map
             Plotly.newPlot('map', traces, layout, {
                 responsive: true,
                 displayModeBar: true,
@@ -605,10 +624,6 @@
             });
 
             updateStats(traces);
-            
-            // Update label toggle visibility
-            const labelToggle = document.getElementById('label-toggle');
-            labelToggle.style.display = activeRegion !== 'global' ? 'flex' : 'none';
         }
 
         // Initialize event listeners
