@@ -73,7 +73,7 @@
                     // Lead Institution
                     'Wits Planetary Health Research',
 
-                    // CHAMNHA Partners (7)
+                    // CHAMNHA Partners (8)
                     'Aga Khan University', 
                     'Institut de Recherche en Sciences de la Santé',
                     'London School of Hygiene and Tropical Medicine', 
@@ -81,8 +81,9 @@
                     'University of Oslo', 
                     'Karolinska University', 
                     'South African Medical Research Council',
+                    'CeSHHAR',
                     
-                    // HE2AT Partners (6)
+                    // HE²AT Partners (6)
                     'CeSHHAR', 
                     'University of Cape Town', 
                     'University Peleforo Gon Coulibaly',
@@ -90,7 +91,7 @@
                     'University of Michigan', 
                     'University of Washington',
                     
-                    // HIGH Partners (8)
+                    // HIGH Partners (9)
                     'Aga Khan University', 
                     'World Health Organization',
                     'London School of Hygiene and Tropical Medicine', 
@@ -99,8 +100,9 @@
                     'Azienda Sanitaria Locale Roma',
                     'Denmark Technical University', 
                     'University of Graz',
+                    'CeSHHAR',
                     
-                    // ENBEL Partners (16)
+                    // ENBEL Partners (17)
                     'Aga Khan University', 
                     'University of Botswana',
                     'London School of Hygiene and Tropical Medicine', 
@@ -116,13 +118,20 @@
                     'University Paul Sabatier Toulouse', 
                     'Goeteborgs University',
                     'Ilmatieteen Laitos', 
-                    'Lunds University'
+                    'Lunds University',
+                    'CeSHHAR',
+
+                    // HE²AT Center Pilot Projects (4)
+                    'Federal University of Technology, Akure',
+                    'University of Yaoundé',
+                    'Midlands State University',
+                    'Centre Suisse de Recherches Scientifiques en Côte d\'Ivoire'
                 ],
                 'City': [
                     // Lead Institution
                     'Johannesburg',
 
-                    // CHAMNHA (7)
+                    // CHAMNHA (8)
                     'Nairobi',
                     'Ouagadougou',
                     'London',
@@ -130,8 +139,9 @@
                     'Oslo',
                     'Stockholm',
                     'Cape Town',
+                    'Harare',
                     
-                    // HE2AT (6)
+                    // HE²AT (6)
                     'Harare',
                     'Cape Town',
                     'Korhogo',
@@ -139,7 +149,7 @@
                     'Ann Arbor',
                     'Seattle',
                     
-                    // HIGH (8)
+                    // HIGH (9)
                     'Nairobi',
                     'Geneva',
                     'London',
@@ -148,8 +158,9 @@
                     'Rome',
                     'Copenhagen',
                     'Graz',
+                    'Harare',
                     
-                    // ENBEL (16)
+                    // ENBEL (17)
                     'Nairobi',
                     'Gaborone',
                     'London',
@@ -165,13 +176,21 @@
                     'Toulouse',
                     'Gothenburg',
                     'Helsinki',
-                    'Lund'
+                    'Lund',
+                    'Harare',
+
+                    // HE²AT Center Pilot Projects (4)
+                    'Akure',
+                    'Yaounde',
+                    'Gweru',
+                    'Abidjan'
                 ],
                 'Projects': [
                     // Lead Institution
                     ['CHAMNHA', 'HE²AT', 'HIGH', 'ENBEL'],
 
-                    // CHAMNHA (7)
+                    // CHAMNHA Partners (8)
+                    ['CHAMNHA'],
                     ['CHAMNHA'],
                     ['CHAMNHA'],
                     ['CHAMNHA'],
@@ -180,7 +199,7 @@
                     ['CHAMNHA'],
                     ['CHAMNHA'],
                     
-                    // HE2AT (6)
+                    // HE²AT Partners (6)
                     ['HE²AT'],
                     ['HE²AT'],
                     ['HE²AT'],
@@ -188,7 +207,8 @@
                     ['HE²AT'],
                     ['HE²AT'],
                     
-                    // HIGH (8)
+                    // HIGH Partners (9)
+                    ['HIGH'],
                     ['HIGH'],
                     ['HIGH'],
                     ['HIGH'],
@@ -198,7 +218,7 @@
                     ['HIGH'],
                     ['HIGH'],
                     
-                    // ENBEL (16)
+                    // ENBEL Partners (17)
                     ['ENBEL'],
                     ['ENBEL'],
                     ['ENBEL'],
@@ -214,7 +234,14 @@
                     ['ENBEL'],
                     ['ENBEL'],
                     ['ENBEL'],
-                    ['ENBEL']
+                    ['ENBEL'],
+                    ['ENBEL'],
+
+                    // HE²AT Center Pilot Projects (4)
+                    ['HE²AT'],
+                    ['HE²AT'],
+                    ['HE²AT'],
+                    ['HE²AT']
                 ]
             },
             funders: {
@@ -233,11 +260,11 @@
                     'Brussels'
                 ],
                 'Projects': [
-                    ['CHAMNHA'],
-                    ['CHAMNHA'],
-                    ['CHAMNHA'],
-                    ['CHAMNHA', 'HE²AT'],
-                    ['HIGH', 'ENBEL']
+                    ['CHAMNHA', 'HE²AT', 'HIGH', 'ENBEL'],
+                    ['CHAMNHA', 'HE²AT', 'HIGH', 'ENBEL'],
+                    ['CHAMNHA', 'HE²AT', 'HIGH', 'ENBEL'],
+                    ['CHAMNHA', 'HE²AT', 'HIGH', 'ENBEL'],
+                    ['CHAMNHA', 'HE²AT', 'HIGH', 'ENBEL']
                 ]
             }
         };
@@ -269,15 +296,20 @@
             'Toulouse': [43.6047, 1.4442],
             'Gothenburg': [57.7089, 11.9746],
             'Helsinki': [60.1699, 24.9384],
-            'Bethesda': [38.9847, -77.0947]
+            'Bethesda': [38.9847, -77.0947],
+            // New HEAT Center pilot project locations
+            'Akure': [7.2571, 5.2058],
+            'Yaounde': [3.8480, 11.5021],
+            'Gweru': [-19.4167, 29.8167],
+            'Abidjan': [5.3600, -4.0083]
         };
 
         const regions = {
             global: {
-                center: { lon: 10, lat: 25 },
-                zoom: 1.7,
-                lats: [-60, 75],
-                lons: [-170, 180]
+                center: { lon: 15, lat: 20 },
+                zoom: 2.2,
+                lats: [-50, 70],
+                lons: [-160, 180]
             },
             africa: {
                 center: { lon: 20, lat: 0 },
@@ -286,10 +318,10 @@
                 lons: [-20, 60]
             },
             europe: {
-                center: { lon: 10, lat: 50 },
-                zoom: 3.8,
-                lats: [35, 65],
-                lons: [-15, 35]
+                center: { lon: 15, lat: 52 },
+                zoom: 3.5,
+                lats: [35, 70],
+                lons: [-25, 45]
             },
             usa: {
                 center: { lon: -98, lat: 40 },
@@ -364,10 +396,11 @@
             if (filters.layers.includes('partners')) {
                 data.partners.Institution.forEach((inst, idx) => {
                     const projects = data.partners.Projects[idx];
-                    if (projects.some(p => filters.projects.includes(p))) {
+                    const matchingProjects = projects.filter(p => filters.projects.includes(p));
+                    if (matchingProjects.length > 0) {
                         filtered.partners.Institution.push(inst);
                         filtered.partners.City.push(data.partners.City[idx]);
-                        filtered.partners.Projects.push(projects);
+                        filtered.partners.Projects.push(matchingProjects);
                     }
                 });
             }
@@ -375,10 +408,11 @@
             if (filters.layers.includes('funders')) {
                 data.funders.Institution.forEach((inst, idx) => {
                     const projects = data.funders.Projects[idx];
-                    if (projects.some(p => filters.projects.includes(p))) {
+                    const matchingProjects = projects.filter(p => filters.projects.includes(p));
+                    if (matchingProjects.length > 0) {
                         filtered.funders.Institution.push(inst);
                         filtered.funders.City.push(data.funders.City[idx]);
-                        filtered.funders.Projects.push(projects);
+                        filtered.funders.Projects.push(matchingProjects);
                     }
                 });
             }
@@ -387,8 +421,45 @@
         }
 
         function filterDataByRegion(data, region) {
-            // ... rest of your existing filterDataByRegion function
-            return data;
+            const view = regions[region];
+            const filtered = {
+                partners: {
+                    Institution: [],
+                    City: [],
+                    Projects: []
+                },
+                funders: {
+                    Institution: [],
+                    City: [],
+                    Projects: []
+                }
+            };
+
+            // Filter partners
+            data.partners.City.forEach((city, idx) => {
+                const coords = coordinates[city];
+                if (coords && 
+                    coords[0] >= view.lats[0] && coords[0] <= view.lats[1] &&
+                    coords[1] >= view.lons[0] && coords[1] <= view.lons[1]) {
+                    filtered.partners.Institution.push(data.partners.Institution[idx]);
+                    filtered.partners.City.push(city);
+                    filtered.partners.Projects.push(data.partners.Projects[idx]);
+                }
+            });
+
+            // Filter funders
+            data.funders.City.forEach((city, idx) => {
+                const coords = coordinates[city];
+                if (coords && 
+                    coords[0] >= view.lats[0] && coords[0] <= view.lats[1] &&
+                    coords[1] >= view.lons[0] && coords[1] <= view.lons[1]) {
+                    filtered.funders.Institution.push(data.funders.Institution[idx]);
+                    filtered.funders.City.push(city);
+                    filtered.funders.Projects.push(data.funders.Projects[idx]);
+                }
+            });
+
+            return filtered;
         }
 
         function updateMap() {
@@ -403,36 +474,40 @@
                 const projectGroups = {};
                 
                 Object.keys(regionFilteredData.partners.Projects).forEach((idx) => {
-                    const project = regionFilteredData.partners.Projects[idx][0];
-                    if (!projectGroups[project]) {
-                        projectGroups[project] = {
-                            lons: [],
-                            lats: [],
-                            texts: [],
-                            labels: []
-                        };
-                    }
-                    projectGroups[project].lons.push(coordinates[regionFilteredData.partners.City[idx]][1]);
-                    projectGroups[project].lats.push(coordinates[regionFilteredData.partners.City[idx]][0]);
-                    
-                    const institution = regionFilteredData.partners.Institution[idx];
-                    const city = regionFilteredData.partners.City[idx];
-                    
-                    projectGroups[project].texts.push(
-                        `<b>${institution}</b><br>` +
-                        `${city}<br>` +
-                        `Project: ${project}`
-                    );
-                    projectGroups[project].labels.push(institution);
+                    const projects = regionFilteredData.partners.Projects[idx];
+                    projects.forEach(project => {
+                        if (!projectGroups[project]) {
+                            projectGroups[project] = {
+                                lons: [],
+                                lats: [],
+                                texts: [],
+                                labels: []
+                            };
+                        }
+                        projectGroups[project].lons.push(coordinates[regionFilteredData.partners.City[idx]][1]);
+                        projectGroups[project].lats.push(coordinates[regionFilteredData.partners.City[idx]][0]);
+                        
+                        const institution = regionFilteredData.partners.Institution[idx];
+                        const city = regionFilteredData.partners.City[idx];
+                        
+                        projectGroups[project].texts.push(
+                            `<b>${institution}</b><br>` +
+                            `${city}<br>` +
+                            `Project: ${project}`
+                        );
+                        projectGroups[project].labels.push(institution);
+                    });
                 });
 
                 Object.entries(projectGroups).forEach(([project, group]) => {
-                    traces.push(createTrace(group, {
-                        name: project,
-                        size: 6,
-                        symbol: 'circle',
-                        color: colors[project]
-                    }));
+                    if (filters.projects.includes(project)) {
+                        traces.push(createTrace(group, {
+                            name: project,
+                            size: 6,
+                            symbol: 'circle',
+                            color: colors[project]
+                        }));
+                    }
                 });
             }
 
