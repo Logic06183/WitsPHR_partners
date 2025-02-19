@@ -9,7 +9,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>Wits Planetary Health Research Interactive Dashboard</h1>
+        <header class="header">
+            <div class="logo-container">
+                <img src="image.png" alt="Wits PHR Logo" class="logo">
+            </div>
+            <h1>Wits Planetary Health Research Interactive Dashboard</h1>
+        </header>
         
         <div class="filters">
             <div class="filter-group">
@@ -49,12 +54,31 @@
             </div>
         </div>
 
-        <div id="stats">
-            <h3>Statistics</h3>
-            <p>Partners: <span id="partner-count">0</span></p>
-            <p>Funders: <span id="funder-count">0</span></p>
-            <p>Countries: <span id="country-count">0</span></p>
-            <p>Active Projects: <span id="project-count">0</span></p>
+        <div id="stats" class="stats-container">
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-value" id="partner-count">0</div>
+                    <div class="stat-label">Research Partners</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-value" id="funder-count">0</div>
+                    <div class="stat-label">Funding Organizations</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-value" id="country-count">0</div>
+                    <div class="stat-label">Countries Represented</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-value" id="project-count">0</div>
+                    <div class="stat-label">Research Programmes</div>
+                </div>
+            </div>
         </div>
 
         <footer class="footer">
@@ -611,21 +635,68 @@
         });
 
         function updateStats(traces) {
-            const partnerCount = traces.filter(t => !t.name.startsWith('Funders')).length;
-            const funderCount = traces.filter(t => t.name === 'Funders').length;
-            document.getElementById('partner-count').textContent = partnerCount;
-            document.getElementById('funder-count').textContent = funderCount;
-            
+            const uniquePartners = new Set();
+            const uniqueFunders = new Set();
             const uniqueCountries = new Set();
-            traces.forEach(trace => {
-                trace.lon.forEach((lon, i) => {
-                    uniqueCountries.add(`${lon},${trace.lat[i]}`);
-                });
-            });
-            document.getElementById('country-count').textContent = uniqueCountries.size;
             
-            const uniqueProjects = new Set(traces.map(t => t.name));
-            document.getElementById('project-count').textContent = uniqueProjects.size;
+            // Count unique partners and their countries
+            data.partners.Institution.forEach((institution, idx) => {
+                const projects = data.partners.Projects[idx];
+                const selectedProjects = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                    .filter(cb => !['partners', 'funders'].includes(cb.value))
+                    .map(cb => cb.value);
+                
+                // Only count if the partner is involved in any of the selected projects
+                if (projects.some(project => selectedProjects.includes(project))) {
+                    uniquePartners.add(institution);
+                    uniqueCountries.add(data.partners.City[idx]);
+                }
+            });
+
+            // Count unique funders
+            data.funders.Institution.forEach((institution, idx) => {
+                const projects = data.funders.Projects[idx];
+                const selectedProjects = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                    .filter(cb => !['partners', 'funders'].includes(cb.value))
+                    .map(cb => cb.value);
+                
+                // Only count if the funder is involved in any of the selected projects
+                if (projects.some(project => selectedProjects.includes(project))) {
+                    uniqueFunders.add(institution);
+                    uniqueCountries.add(data.funders.City[idx]);
+                }
+            });
+
+            // Count active projects
+            const activeProjects = new Set(Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                .filter(cb => !['partners', 'funders'].includes(cb.value))
+                .map(cb => cb.value));
+
+            // Update the stats display with animations
+            animateCount('partner-count', uniquePartners.size);
+            animateCount('funder-count', uniqueFunders.size);
+            animateCount('country-count', uniqueCountries.size);
+            animateCount('project-count', activeProjects.size);
+        }
+
+        function animateCount(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            const startValue = parseInt(element.textContent);
+            const duration = 1000; // Animation duration in milliseconds
+            const steps = 20; // Number of steps in the animation
+            const stepValue = (targetValue - startValue) / steps;
+            let currentStep = 0;
+
+            const animation = setInterval(() => {
+                currentStep++;
+                const currentValue = Math.round(startValue + (stepValue * currentStep));
+                element.textContent = currentValue;
+
+                if (currentStep >= steps) {
+                    element.textContent = targetValue;
+                    clearInterval(animation);
+                }
+            }, duration / steps);
         }
 
         // Initialize the map
