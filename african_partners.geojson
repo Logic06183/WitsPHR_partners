@@ -1,0 +1,135 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "Wits Planetary Health Research",
+        "city": "Johannesburg",
+        "country": "South Africa",
+        "projects": ["CHAMNHA", "HE²AT", "HIGH", "ENBEL"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [28.0473, -26.2041]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "Institut de Recherche en Sciences de la Santé",
+        "city": "Ouagadougou",
+        "country": "Burkina Faso",
+        "projects": ["CHAMNHA"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.5197, 12.3714]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "CeSHHAR",
+        "city": "Harare",
+        "country": "Zimbabwe",
+        "projects": ["CHAMNHA", "HE²AT", "HIGH", "ENBEL"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [31.0335, -17.8252]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "University of Cape Town",
+        "city": "Cape Town",
+        "country": "South Africa",
+        "projects": ["HE²AT"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [18.4241, -33.9249]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "University Peleforo Gon Coulibaly",
+        "city": "Korhogo",
+        "country": "Côte d'Ivoire",
+        "projects": ["HE²AT"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.6290, 9.4557]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "IBM Research Africa",
+        "city": "Johannesburg",
+        "country": "South Africa",
+        "projects": ["HE²AT"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [28.0328, -26.1715]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "Federal University of Technology",
+        "city": "Akure",
+        "country": "Nigeria",
+        "projects": ["HE²AT"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.2058, 7.2571]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "University of Yaoundé",
+        "city": "Yaounde",
+        "country": "Cameroon",
+        "projects": ["HE²AT"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.5021, 3.8480]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "Midlands State University",
+        "city": "Gweru",
+        "country": "Zimbabwe",
+        "projects": ["HE²AT"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.8167, -19.4167]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "institution": "Centre Suisse de Recherches Scientifiques",
+        "city": "Abidjan",
+        "country": "Côte d'Ivoire",
+        "projects": ["HE²AT"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.0083, 5.3600]
+      }
+    }
+  ]
+} 

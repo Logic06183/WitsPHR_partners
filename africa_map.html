@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>African Research Partners Network</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <style>
+        body { margin: 0; padding: 20px; font-family: "Helvetica Neue", Arial, sans-serif; }
+        #map { height: 700px; width: 100%; }
+        .legend {
+            background: white;
+            padding: 10px;
+            border-radius: 3px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .custom-label {
+            background: white;
+            padding: 3px 6px;
+            font-size: 11px;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .country-label {
+            background: white;
+            padding: 3px 6px;
+            font-size: 11px;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-size: 24px; margin-bottom: 10px;">African Research Partners Network</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 20px;">Wits Planetary Health Research Collaboration Map</p>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="africa_partners.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([0, 20], 4);
+
+        // Add CartoDB positron basemap
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '©OpenStreetMap, ©CartoDB'
+        }).addTo(map);
+
+        // Update the HE²AT country definitions with more accurate coordinates
+        const HEATCountries = {
+            'South Africa': [
+                [-22.1265, 29.4688], [-22.2, 31.0], [-23.4, 32.0],
+                [-25.5, 32.0], [-27.0, 32.9], [-28.5, 32.0],
+                [-31.0, 29.5], [-31.5, 27.0], [-32.0, 24.0],
+                [-29.0, 22.0], [-28.5, 20.0], [-25.5, 20.0],
+                [-22.1265, 29.4688]
+            ],
+            'Zimbabwe': [
+                [-15.6, 29.8], [-15.6, 32.8], [-16.5, 32.8],
+                [-18.5, 32.8], [-22.1, 31.0], [-22.1, 29.4],
+                [-22.1, 28.0], [-19.0, 27.0], [-18.0, 26.0],
+                [-15.6, 29.8]
+            ],
+            'Nigeria': [
+                [13.5, 2.7], [13.0, 8.0], [13.0, 14.0],
+                [10.0, 14.0], [7.0, 14.0], [4.0, 12.0],
+                [4.0, 3.0], [6.5, 2.7], [13.5, 2.7]
+            ],
+            'Ghana': [
+                [11.0, -2.4], [11.0, 0.0], [10.0, 0.0],
+                [7.0, 0.0], [5.0, 1.2], [4.7, -2.0],
+                [5.0, -3.2], [7.5, -3.2], [11.0, -2.4]
+            ],
+            'Cameroon': [
+                [12.5, 14.5], [12.5, 15.0], [11.0, 15.0],
+                [8.5, 13.0], [4.0, 11.0], [2.0, 9.9],
+                [2.2, 16.0], [4.0, 16.0], [12.5, 14.5]
+            ],
+            'Burkina Faso': [
+                [14.5, -5.5], [14.5, -0.1], [13.0, 2.0],
+                [11.0, 2.0], [9.5, 2.8], [9.5, -2.7],
+                [10.0, -4.3], [14.5, -5.5]
+            ],
+            "Côte d'Ivoire": [
+                [10.0, -8.0], [10.0, -4.0], [8.0, -3.0],
+                [5.0, -3.0], [4.5, -7.5], [6.5, -8.0],
+                [10.0, -8.0]
+            ],
+            'Benin': [
+                [12.5, 0.8], [12.5, 3.8], [11.0, 3.8],
+                [9.0, 3.8], [6.5, 1.7], [6.5, 1.0],
+                [9.0, 0.8], [12.5, 0.8]
+            ]
+        };
+
+        // Update the polygon styling
+        Object.entries(HEATCountries).forEach(([country, coords]) => {
+            L.polygon(coords, {
+                color: '#666',
+                weight: 1.5,
+                fillColor: '#FFA726',
+                fillOpacity: 0.3,
+                smoothFactor: 1,
+                interactive: true
+            })
+            .bindTooltip(country, {
+                permanent: false,
+                direction: 'center',
+                className: 'country-label'
+            })
+            .addTo(map);
+        });
+
+        // Project colors
+        const colors = {
+            'CHAMNHA': '#2E86C1',
+            'HE²AT': '#28B463',
+            'HIGH': '#E67E22',
+            'ENBEL': '#C0392B'
+        };
+
+        // Add markers for each partner
+        africanPartners.forEach(partner => {
+            // Add circle marker
+            const marker = L.circleMarker(partner.coords, {
+                radius: 6 + (partner.projects.length),
+                fillColor: colors[partner.projects[0]],
+                color: 'white',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            // Add popup
+            marker.bindPopup(`
+                <div style="font-size: 12px;">
+                    <strong>${partner.institution}</strong><br>
+                    ${partner.city}<br>
+                    <small>${partner.projects.join(' • ')}</small>
+                </div>
+            `);
+
+            // Create better positioned labels with offsets based on location
+            const labelText = partner.institution
+                .replace('University', 'Univ.')
+                .replace('Research', 'Res.')
+                .replace('Institute', 'Inst.');
+
+            // Calculate label position to avoid overlaps
+            let xOffset = 0;
+            let yOffset = -20;  // Default offset above the point
+
+            // Adjust offsets based on location to prevent overlaps
+            switch(partner.city) {
+                case 'Johannesburg':
+                    xOffset = 60;
+                    yOffset = 0;
+                    break;
+                case 'Harare':
+                    xOffset = -60;
+                    yOffset = 0;
+                    break;
+                case 'Cape Town':
+                    yOffset = 20;  // Below the point
+                    break;
+                case 'Ouagadougou':
+                    xOffset = 60;
+                    break;
+                case 'Yaounde':
+                    xOffset = -60;
+                    break;
+                // Add more specific positions as needed
+            }
+
+            // Create and add the label
+            const label = L.divIcon({
+                className: 'custom-label',
+                html: `
+                    <div style="
+                        background: white;
+                        padding: 4px 8px;
+                        border-radius: 3px;
+                        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                        font-size: 11px;
+                        white-space: nowrap;
+                        pointer-events: none;
+                    ">
+                        ${labelText}<br>
+                        <span style="font-size: 9px; color: #666;">${partner.city}</span>
+                    </div>
+                `,
+                iconSize: [120, 40],
+                iconAnchor: [60 - xOffset, 20 - yOffset]
+            });
+
+            L.marker(partner.coords, {
+                icon: label,
+                interactive: false,
+                zIndexOffset: -1000  // Place labels behind points
+            }).addTo(map);
+        });
+
+        // Add legend
+        const legend = L.control({ position: 'bottomright' });
+        legend.onAdd = function(map) {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = '<h4>Research Projects</h4>';
+            Object.entries(colors).forEach(([project, color]) => {
+                div.innerHTML += `
+                    <div style="margin: 5px 0;">
+                        <span style="background: ${color}; width: 10px; height: 10px; display: inline-block; border-radius: 50%; margin-right: 5px;"></span>
+                        ${project}
+                    </div>
+                `;
+            });
+            div.innerHTML += `
+                <div style="margin-top: 10px;">
+                    <span style="background: #FFA726; opacity: 0.4; width: 14px; height: 14px; display: inline-block; margin-right: 5px; border: 1px solid #666;"></span>
+                    HE²AT Study Sites
+                </div>
+            `;
+            return div;
+        };
+        legend.addTo(map);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,28 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "South Africa",
+        "program": "HE²AT"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[28.0, -25.0], [32.0, -25.0], [32.0, -30.0], [28.0, -30.0], [28.0, -25.0]]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Zimbabwe",
+        "program": "HE²AT"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[28.0, -17.0], [32.0, -17.0], [32.0, -22.0], [28.0, -22.0], [28.0, -17.0]]]]
+      }
+    },
+    // ... other countries
+  ]
+} 

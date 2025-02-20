@@ -558,8 +558,13 @@
 
             // Update label toggle visibility and text
             const labelToggle = document.getElementById('label-toggle');
-            labelToggle.style.display = 'flex';
+            labelToggle.style.display = activeRegion === 'global' ? 'none' : 'flex';
             labelToggle.querySelector('.text').textContent = showLabels ? 'Hide Labels' : 'Show Labels';
+
+            // If switching to global view, ensure labels are hidden
+            if (activeRegion === 'global' && showLabels) {
+                showLabels = false;
+            }
 
             // Create the layout
             const layout = {
