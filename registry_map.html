@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Registry Network</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            font-family: "Helvetica Neue", Arial, sans-serif; 
+        }
+        #map { 
+            height: 700px; 
+            width: 100%; 
+        }
+        .legend {
+            background: white;
+            padding: 10px;
+            border-radius: 3px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .custom-label {
+            background: white;
+            padding: 3px 6px;
+            font-size: 11px;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-size: 24px; margin-bottom: 10px;">Global Registry Network</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 20px;">Registry and Hospital Data Coverage</p>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="registry_partners.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([20, 0], 2);
+
+        // Add CartoDB positron basemap
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '©OpenStreetMap, ©CartoDB'
+        }).addTo(map);
+
+        // Define colors for different types
+        const colors = {
+            'National Registry': '#2E86C1',
+            'Sub-national database': '#28B463',
+            'Hospital data': '#E67E22'
+        };
+
+        // Add markers for each type of data
+        // National Registry markers
+        registryData.nationalRegistry.forEach(site => {
+            const marker = L.circleMarker(site.coords, {
+                radius: 8,
+                fillColor: colors['National Registry'],
+                color: 'white',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            marker.bindPopup(`
+                <div style="font-size: 12px;">
+                    <strong>${site.country}</strong><br>
+                    ${site.type}
+                </div>
+            `);
+        });
+
+        // Sub-national database markers
+        registryData.subNationalRegistry.forEach(site => {
+            const marker = L.circleMarker(site.coords, {
+                radius: 8,
+                fillColor: colors['Sub-national database'],
+                color: 'white',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            marker.bindPopup(`
+                <div style="font-size: 12px;">
+                    <strong>${site.country}</strong><br>
+                    ${site.region}<br>
+                    ${site.type}
+                </div>
+            `);
+        });
+
+        // Hospital data markers
+        registryData.hospitalData.forEach(site => {
+            const marker = L.circleMarker(site.coords, {
+                radius: 6 + (site.hospitals * 2),
+                fillColor: colors['Hospital data'],
+                color: 'white',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            marker.bindPopup(`
+                <div style="font-size: 12px;">
+                    <strong>${site.country}</strong><br>
+                    ${site.hospitals} Hospital${site.hospitals > 1 ? 's' : ''}<br>
+                    ${site.type}
+                </div>
+            `);
+        });
+
+        // Add legend
+        const legend = L.control({ position: 'bottomright' });
+        legend.onAdd = function(map) {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = '<h4>Data Sources</h4>';
+            Object.entries(colors).forEach(([type, color]) => {
+                div.innerHTML += `
+                    <div style="margin: 5px 0;">
+                        <span style="background: ${color}; width: 10px; height: 10px; display: inline-block; border-radius: 50%; margin-right: 5px;"></span>
+                        ${type}
+                    </div>
+                `;
+            });
+            return div;
+        };
+        legend.addTo(map);
+    </script>
+</body>
+</html> 
